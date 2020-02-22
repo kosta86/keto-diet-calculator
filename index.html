@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<!-- <link rel="stylesheet" href="css/styles.css"> -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+		integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<link href="css/line-awesome.css" rel="stylesheet" type="text/css">
+	<title>Document</title>
+</head>
+
+<body>
+
+	<!--************************************************************************************************-->
+
+	<div class="desktop-container">
+
+		<nav class="mainNavbar navbar navbar-expand-lg" style="display:block;">
+			<div class="container">
+				<i class="btn-back-step back" alt="Back"></i>
+				<img src="/img/icons/back.svg" alt="Back" class="btn-back-step" data-btn="back">
+				<div class="navbar-brand">
+					<img src="/img/logo.svg?v2" alt="KetoCycle.Diet" class="regular-logo">
+				</div>
+			</div>
+		</nav>
+		<div class="subheader" style="display:block;">
+			<div class="progress-bar">
+				<div class="progress" style="width: 50%;"></div>
+			</div>
+		</div>
+
+
+
+
+		<div class="container">
+			<div class="step active" id="step-1" data-question_type="units" data-mode="question" data-answer_type="input"
+				data-step="1">
+				<div class="units-toggler">
+					<button class="btn" id="zensko" data-sex="zensko">Zensko</button>
+					<button class="btn" id="musko" data-sex="musko">Musko</button>
+				</div>
+				<div class="question">Measurements</div>
+				<div class="input-holder">
+					<input id="age-value" class="input-field" type="number" data-input_question="age" placeholder="Age" value="">
+					<div class="units">years</div>
+				</div>
+				<div class="input-holder">
+					<input id="metric-height-value" class="input-field" type="number" data-input_question="height"
+						placeholder="Height" value="">
+					<div class="units height">cm</div>
+				</div>
+				<div class="input-holder">
+					<input id="weight-value" class="input-field" type="number" data-input_question="weight"
+						placeholder="Weight (kg)" value="">
+					<div class="units weight"> kg </div>
+				</div>
+				<div class="input-holder">
+					<input id="targetWeight-value" class="input-field" type="number" data-input_question="target_weight"
+						placeholder="Target weight (kg)" value="">
+					<div class="units weight"> kg </div>
+				</div>
+				<div class="error-msg">
+					<p></p>
+				</div>
+				<button class="btn btn-primary btn-next-step" data-btn="next">Next</button>
+			</div>
+
+			<div class="step" id="step-2" data-question_type="excludeMeat" data-mode="question" data-answer_type="multiple"
+				data-step="2">
+				<div class="question">
+					Meat
+				</div>
+				<div class="question-description">
+					Please select which products you would like included in the plan
+				</div>
+				<div class="fancy-checkbox-holder">
+					<!-- <input type="hidden" name="answer" value="0"> -->
+					<div class="fancy-radio with-icon" data-answer="chicken" data-btn="check">
+						<div class="icon">
+							<i class="chicken"></i>
+						</div>
+						Chicken
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="pork" data-btn="check">
+						<div class="icon">
+							<i class="pork"></i>
+						</div>
+						Pork
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="beef" data-btn="check">
+						<div class="icon">
+							<i class="beef"></i>
+						</div>
+						Beef
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="fish" data-btn="check">
+						<div class="icon">
+							<i class="fish"></i>
+						</div>
+						Fish
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="lamb" data-btn="check">
+						<div class="icon">
+							<i class="lamb"></i>
+						</div>
+						Lamb
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="veal" data-btn="check">
+						<div class="icon">
+							<i class="veal"></i>
+						</div>
+						Veal
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="vegetarian" data-btn="check">
+						I am vegetarian
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+				</div>
+				<div class="error-msg"></div>
+				<button class="btn btn-primary btn-next-step" data-btn="next">Next</button>
+			</div>
+
+			<div class="step" id="step-3" data-question_type="excludeOthers" data-mode="question" data-answer_type="multiple"
+				data-step="3">
+				<div class="question">
+					Products
+				</div>
+				<div class="question-description">
+					Please select which products you would like included in the plan
+				</div>
+				<div class="fancy-checkbox-holder">
+					<input type="hidden" name="answer" value="0">
+					<div class="fancy-radio with-icon" data-answer="onions" data-btn="check">
+						<div class="icon">
+							<i class="onions"></i>
+						</div>
+						Onions
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="mushrooms" data-btn="check">
+						<div class="icon">
+							<i class="mushroom"></i>
+						</div>
+						Mushrooms
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="eggs" data-btn="check">
+						<div class="icon">
+							<i class="egg"></i>
+						</div>
+						Eggs
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="nuts" data-btn="check">
+						<div class="icon">
+							<i class="nuts"></i>
+						</div>
+						Nuts
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="cheese" data-btn="check">
+						<div class="icon">
+							<i class="cheese"></i>
+						</div>
+						Cheese
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="butter" data-btn="check">
+						<div class="icon">
+							<i class="butter"></i>
+						</div>
+						Butter
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="milk" data-btn="check">
+						<div class="icon">
+							<i class="milk"></i>
+						</div>
+						Milk
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="avocado" data-btn="check">
+						<div class="icon">
+							<i class="avocado"></i>
+						</div>
+						Avocados
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="seafood" data-btn="check">
+						<div class="icon">
+							<i class="seafood"></i>
+						</div>
+						Seafood
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="olives" data-btn="check">
+						<div class="icon">
+							<i class="olives"></i>
+						</div>
+						Olives
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="capers" data-btn="check">
+						<div class="icon">
+							<i class="capers"></i>
+						</div>
+						Capers
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="coconut" data-btn="check">
+						<div class="icon">
+							<i class="coconut"></i>
+						</div>
+						Coconut
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio with-icon" data-answer="goat" data-btn="check">
+						<div class="icon">
+							<i class="goat-cheese"></i>
+						</div>
+						Goat cheese
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+				</div>
+				<div class="error-msg"></div>
+				<button class="btn btn-primary btn-next-step" data-btn="next">Next</button>
+			</div>
+			<div class="step" id="step-4" data-question_type="workoutType" data-mode="question" data-answer_type="single"
+				data-step="4">
+				<div class="question">
+					How physically active are you?
+				</div>
+				<div class="fancy-radio-holder">
+					<input type="hidden" name="answer" value="0">
+					<div class="fancy-radio btn btn-primary" data-answer="1.9" data-btn="single">
+						Professional (5-6 workouts / week)
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio btn btn-primary" data-answer="1.7" data-btn="single">
+						Workout hero (3-4 workouts / week)
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio btn btn-primary" data-answer="1.4" data-btn="single">
+						Light-mode (1-2 workouts /week)
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio btn btn-primary" data-answer="1.2" data-btn="single">
+						Ne treniram
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+				</div>
+				<div class="error-msg"></div>
+			</div>
+			<div class="step" id="step-5" data-question_type="weightGoal" data-mode="final-question" data-answer_type="single"
+				data-step="5">
+				<div class="question">
+					How willing are you to lose weight?
+				</div>
+				<div class="fancy-radio-holder">
+					<input type="hidden" name="answer" value="0">
+					<div class="fancy-radio btn btn-primary" data-answer="1" data-btn="single">
+						Zelim da smrsam
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio btn btn-primary" data-answer="2" data-btn="single">
+						Zelim da odrzim trenutnu kilazu
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+					<div class="fancy-radio btn btn-primary" data-answer="3" data-btn="single">
+						Zelim da povecam misicnu masu
+						<div class="status"></div>
+						<div class="status-icon">-</div>
+					</div>
+				</div>
+				<div class="error-msg"></div>
+			</div>
+
+		</div>
+	</div>
+
+
+
+
+	<!--************************************************************************************************-->
+	<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
+	<script type="text/javascript" src="js/index.js"></script>
+	<!-- 	<script type="text/javascript" src="js/app.js"></script> -->
+
+</body>
+
+</html>
