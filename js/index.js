@@ -85,19 +85,17 @@ var UIController = (function () {
 
             if (allInputFields[i].value == '') {
                 emptyField = allInputFields[i].dataset.input_question;
-                allInputFields[i].focus;
+                allInputFields[i].focus();
                 errorMsgContainer.innerHTML = `Morate popuniti polje ${emptyField}`;
-
-                }
-
+                errorMsgContainer.style.display = 'block';
+            } 
         }
-
+        
         if (emptyField === undefined) {
+            errorMsgContainer.style.display = 'none';
             return true
         } else return false;
 
-
-        console.log('you should fill in: ' + emptyField)
     }
 
     //hide current page
@@ -120,7 +118,7 @@ var UIController = (function () {
     }
 
     function showPreviousPage(state) {
-        console.log('jea')
+
         //add active class to previous page
         document.querySelector(`#step-${(state.currentPageNum - 1)}`).classList.add('active');
 
@@ -148,9 +146,6 @@ var UIController = (function () {
 
             //NodeList of all input fields
             var allInputFields = document.querySelectorAll('#step-1 > .input-holder > input');
-
-            console.log(currentPage.querySelectorAll('button'))
-            /* units['sex'] = currentPage */
 
             //iterate input fields and add to inputObj
             for (let input of allInputFields) {
@@ -284,7 +279,6 @@ var controller = (function (UICtrl, dataCtrl) {
 
         //if final question is answered - send data to php script
         if (state.activePage().dataset.mode === 'final-question' && event.target.dataset.btn === 'single') {
-            console.log('radi')
 
             //calculate nutrition needs of user
             ketoPlan = dataCtrl.calculateKeto(input);
@@ -366,6 +360,8 @@ var controller = (function (UICtrl, dataCtrl) {
             //delete stored answers from current page
             input[`${state.questionType()}`] = null;
 
+            //if returning to first page hide error message
+
             // 1. hide current page
             UICtrl.hideCurrentPage(state);
 
@@ -374,8 +370,6 @@ var controller = (function (UICtrl, dataCtrl) {
 
         }
 
-
-        console.log(input);
     }
 
     //******* ILI napravi da event listener bude samo na dugmicima za next i fancy-radio pa u callbacku rokaj if statemente u slucaju da je single odgovor ili checkbox */
