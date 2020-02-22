@@ -78,23 +78,46 @@ var UIController = (function () {
     //validate user input
     function validateInput(state) {
         var allInputFields = document.querySelectorAll('#step-1 > .input-holder > input');
-        var emptyField;
-        var errorMsgContainer = state.activePage().querySelector('.error-msg');
+        var emptyField = false;
+        var sexNotSelected = false;
+        var errorMsgButtons = state.activePage().querySelector('.error-msg');
+        var sexSelectionButtons = state.activePage().querySelector('.units-toggler').children;
 
+
+        //check if sex is selected
+        for (var i = 0; i < sexSelectionButtons.length; i++) {
+
+            if (sexSelectionButtons[i].classList.contains('active')) {
+                sexNotSelected = false;
+                break;
+            } else {
+                sexNotSelected = true;
+                sexSelectionButtons[i].focus();
+                errorMsgButtons.innerHTML = `Morate popuniti polje pol`;
+                errorMsgButtons.style.display = 'block';
+            }
+
+
+        }
+        console.log('sexnotslected: ' + sexNotSelected)
+
+        //check each field - if empty show error msg 
         for (var i = allInputFields.length - 1; i >= 0; i--) {
 
             if (allInputFields[i].value == '') {
-                emptyField = allInputFields[i].dataset.input_question;
+                emptyField = true;
                 allInputFields[i].focus();
-                errorMsgContainer.innerHTML = `Morate popuniti polje ${emptyField}`;
-                errorMsgContainer.style.display = 'block';
+                errorMsgButtons.innerHTML = `Morate popuniti polje ${allInputFields[i].dataset.input_question}`;
+                errorMsgButtons.style.display = 'block';
             } 
         }
         
-        if (emptyField === undefined) {
-            errorMsgContainer.style.display = 'none';
+    
+        //if there are no empty fields return true
+        if (emptyField === false && sexNotSelected === false) {
+            errorMsgButtons.style.display = 'none';
             return true
-        } else return false;
+        } else return false; // else return false
 
     }
 
