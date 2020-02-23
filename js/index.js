@@ -4,13 +4,7 @@ var dataController = (function () {
 
     //calculate keto plan
     function calculateKeto(userData) {
-        var input = {
-            units: {},
-            excludeMeat: [],
-            excludeOthers: [],
-            workoutType: null,
-            weightGoal: null
-        }
+
         function calcBMR() {
 
             var BMR = (10 * userData.units.weight) + (6.25 * userData.units.height) - (5 * userData.units.age) + 5;
@@ -65,6 +59,8 @@ var UIController = (function () {
 
     //add active class to selected sex button 
     function addActive(event, state) {
+
+        //if clicked on sex selection buttons
         var clickedButton = event.target;
         var notClickedButton = event.target.previousElementSibling || event.target.nextElementSibling;
 
@@ -78,44 +74,41 @@ var UIController = (function () {
     //validate user input
     function validateInput(state) {
         var allInputFields = document.querySelectorAll('#step-1 > .input-holder > input');
-        var emptyField = false;
-        var sexNotSelected = false;
-        var errorMsgButtons = state.activePage().querySelector('.error-msg');
-        var sexSelectionButtons = state.activePage().querySelector('.units-toggler').children;
+        var noEmptyFields = false;
+        var sexSelected = false;
+        var errorMsgContainer = document.querySelector('#step-1 > .error-msg');
+        var sexSelectionButtons = document.querySelector('#step-1 > .units-toggler').children;
 
-       
         //check if sex is selected
         for (var i = 0; i < sexSelectionButtons.length; i++) {
 
             if (sexSelectionButtons[i].classList.contains('active')) {
-                sexNotSelected = false;
+                sexSelected = true;
                 break;
+
             } else {
-                sexNotSelected = true;
+                sexSelected = false;
                 sexSelectionButtons[i].focus();
-                errorMsgButtons.innerHTML = `Morate popuniti polje pol`;
-                errorMsgButtons.style.display = 'block';
+                errorMsgContainer.innerHTML = `Morate popuniti polje pol`;
+                errorMsgContainer.style.display = 'block';
             }
-
-
         }
-       
 
         //check each field - if empty show error msg 
         for (var i = allInputFields.length - 1; i >= 0; i--) {
 
             if (allInputFields[i].value == '') {
-                emptyField = true;
+                console.log('there are empty fields')
+                noEmptyFields = false;
                 allInputFields[i].focus();
-                errorMsgButtons.innerHTML = `Morate popuniti polje ${allInputFields[i].dataset.input_question}`;
-                errorMsgButtons.style.display = 'block';
-            } 
+                errorMsgContainer.innerHTML = `Morate popuniti polje ${allInputFields[i].dataset.input_question}`;
+                errorMsgContainer.style.display = 'block';
+            } else noEmptyFields = true;
         }
-        
-    
-        //if there are no empty fields return true
-        if (emptyField === false && sexNotSelected === false) {
-            errorMsgButtons.style.display = 'none';
+
+        //if there are no empty fields and sex is selected return true
+        if (sexSelected === true && noEmptyFields === true) {
+            errorMsgContainer.style.display = 'none';
             return true
         } else return false; // else return false
 
@@ -124,7 +117,6 @@ var UIController = (function () {
     //hide current page
     function hideCurrentPage(state) {
         var currentPage = state.activePage(); //get current active page
-        console.log(state.activePage())
         //remove active class from current page
         currentPage.classList.remove('active');
 
@@ -138,7 +130,7 @@ var UIController = (function () {
         //add active class to next page
         document.querySelector(`#step-${(state.currentPageNum)}`).classList.add('active');
 
-        
+
     }
 
     function showPreviousPage(state) {
@@ -170,14 +162,27 @@ var UIController = (function () {
 
             //NodeList of all input fields
             var allInputFields = document.querySelectorAll('#step-1 > .input-holder > input');
+            var allSexFields = document.querySelectorAll('#step-1 > .units-toggler > button');
+
+            //add chosen sex to units
+            for (let sex of allSexFields) {
+
+                if (sex.classList.contains('active')) {
+
+                    units['pol'] = sex.dataset.sex;
+
+                }
+
+            };
 
             //iterate input fields and add to inputObj
             for (let input of allInputFields) {
 
                 units[`${input.dataset.input_question}`] = `${input.value}`;
 
-            }
-            return units
+            };
+
+            return units;
         }
 
 
@@ -185,28 +190,31 @@ var UIController = (function () {
 
         // if there is multiple answers to check (there is a next button)
         if (answerType === 'multiple') {
-
             var questionType = stateObj.questionType(); //currentQuestionType
             var allCheckedAnswers = document.querySelectorAll(`#step-${stateObj.currentPageNum} > .fancy-checkbox-holder > .checked`); //NodeList of all checked answers
+            var excludeMeatList = [];
+            var excludeOthers = [];
 
-
+            //add meat question checked answers to inputObj
             if (questionType === 'excludeMeat') {
-                //add checked answers to inputObj
+
                 for (let checkedAnswer of allCheckedAnswers) {
-                    excludeMeat.push(checkedAnswer.dataset.answer);
 
-                    if (excludeMeat.includes(checkedAnswer)) {
+                    excludeMeatList.push(checkedAnswer.dataset.answer);
 
-                        excludeMeat.filter(answer => {
+                    if (excludeMeatList.includes(checkedAnswer)) {
+
+                        excludeMeatList.filter(answer => {
                             return answer == checkedAnswer.dataset.answer;
                         })
                     }
                 }
-                return excludeMeat;
+                return excludeMeatList;
             }
 
+            //add other ingredients checked answers to inputObj
             if (questionType === 'excludeOthers') {
-                //add checked answers to inputObj
+
                 for (let checkedAnswer of allCheckedAnswers) {
                     excludeOthers.push(checkedAnswer.dataset.answer);
 
@@ -273,16 +281,16 @@ var controller = (function (UICtrl, dataCtrl) {
             return document.querySelector('.step.active');
         },
         activePageChildren: function () {
-            return document.querySelector('.active').children;
+            return document.querySelector('.step.active').children;
         },
         answerType: function () {
-            return document.querySelector('.active').dataset.answer_type;
+            return document.querySelector('.step.active').dataset.answer_type;
         },
         questionType: function () {
-            return document.querySelector('.active').dataset.question_type;
+            return document.querySelector('.step.active').dataset.question_type;
         },
         questionMode: function () {
-            return document.querySelector('.active').dataset.mode;
+            return document.querySelector('.step.active').dataset.mode;
         },
         currentPageNum: 1
     }
@@ -293,64 +301,75 @@ var controller = (function (UICtrl, dataCtrl) {
 
     //next button handler
     var ctrlBtnHandler = function (event) {
-
+        console.log(input)
         //male-female button handler
         if (state.questionType() === 'units' && event.target.dataset.sex) {
             UICtrl.addActive(event, state);
         }
 
-
-
-        //if final question is answered - send data to php script
-        if (state.activePage().dataset.mode === 'final-question' && event.target.dataset.btn === 'single') {
-
-            //calculate nutrition needs of user
-            ketoPlan = dataCtrl.calculateKeto(input);
-
-
-
-            /* fetch('proracun/proracun.php', {
-                method: 'POST', // or 'PUT'
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(input),
-            })
-            .then((response) => {
-                response.json();
-            })
-            .then((data) => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            }); */
-
-        }
-
-
-
         //if next button
         if (event.target.dataset.btn === 'next') {
 
-            // 1. store user input
-            input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
+            if (state.activePage().id == 'step-1') {
 
-            // 3. hide current page
-            UICtrl.hideCurrentPage(state);
 
-            // 4. show next next page
-            UICtrl.showNextPage(state);
+                if (UICtrl.validateInput(state) === true) {
+                    console.log('running validate input...')
+                    // 1. store user input
+                    input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
-            /* // 5. update current page state
-            UICtrl.updateCurrentPageState(state) */
+                    // 3. hide current page
+                    UICtrl.hideCurrentPage(state);
+
+                    // 4. show next next page
+                    UICtrl.showNextPage(state);
+
+                    /* // 5. update current page state
+                    UICtrl.updateCurrentPageState(state) */
+                }
+
+
+            } else {
+
+                // 1. store user input
+                input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
+
+                // 3. hide current page
+                UICtrl.hideCurrentPage(state);
+
+                // 4. show next next page
+                UICtrl.showNextPage(state);
+            }
+
+
+
 
         }
 
         //if next btn on first page
-        if (event.target.dataset.btn === 'next' && state.activePage().id === 'step-1') {
 
-            if (UICtrl.validateInput === true) {
+
+
+        //if multiple answers fancy-radio button is clicked
+        if (event.target.dataset.btn === 'check') {
+
+            // 1. get user input
+            event.target.classList.toggle('checked');
+
+            // 2. toggle styling to checked button
+            event.target.classList.toggle('active');
+
+            // 2. toggle checked class to clicket button
+            input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
+
+        }
+
+        // if single answer fancy-radio button is clicked
+        if (event.target.dataset.btn === 'single') {
+
+            // if its not final question
+            if (state.questionMode() !== 'final-question') {
+
                 // 1. store user input
                 input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
@@ -360,39 +379,39 @@ var controller = (function (UICtrl, dataCtrl) {
                 // 4. show next next page
                 UICtrl.showNextPage(state);
 
-                /* // 5. update current page state
-                UICtrl.updateCurrentPageState(state) */
             }
-            
 
-        }
+            //if final question is answered - send data to php script
+            if (state.questionMode() === 'final-question') {
+
+                // 1. store user input
+                input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
 
-        //if multiple answers fancy-radio button is clicked
-        if (event.target.dataset.btn === 'check') {
+                //calculate nutrition needs of user
+                /* ketoPlan = dataCtrl.calculateKeto(input); */
 
-            // 1. get user input
-            event.target.classList.toggle('checked');
 
-            // 2. toggle checked class to clicket button
-            input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
-        }
+                /* fetch('proracun/proracun.php', {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(input),
+                })
+                .then((response) => {
+                    response.json();
+                })
+                .then((data) => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                }); */
 
-        // if single answer fancy-radio button is clicked
-        if (event.target.dataset.btn === 'single' && state.questionMode() !== 'final-question') {
+            }
 
-            // 1. store user input
-            input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
-
-            // 3. hide current page
-            UICtrl.hideCurrentPage(state);
-
-            // 4. show next next page
-            UICtrl.showNextPage(state);
-
-            /* // 5. update current page state
-            UICtrl.updateCurrentPageState(state) */
 
         }
 
@@ -402,11 +421,12 @@ var controller = (function (UICtrl, dataCtrl) {
             //delete stored answers from current page
             input[`${state.questionType()}`] = null;
 
+            // 1. hide current page
+            UICtrl.hideCurrentPage(state);
+
             // 2. show previous page
             UICtrl.showPreviousPage(state);
 
-            // 1. hide current page
-            UICtrl.hideCurrentPage(state);
 
         }
 
