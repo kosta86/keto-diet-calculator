@@ -83,7 +83,7 @@ var UIController = (function () {
         var errorMsgButtons = state.activePage().querySelector('.error-msg');
         var sexSelectionButtons = state.activePage().querySelector('.units-toggler').children;
 
-
+       
         //check if sex is selected
         for (var i = 0; i < sexSelectionButtons.length; i++) {
 
@@ -99,7 +99,7 @@ var UIController = (function () {
 
 
         }
-        console.log('sexnotslected: ' + sexNotSelected)
+       
 
         //check each field - if empty show error msg 
         for (var i = allInputFields.length - 1; i >= 0; i--) {
@@ -124,20 +124,21 @@ var UIController = (function () {
     //hide current page
     function hideCurrentPage(state) {
         var currentPage = state.activePage(); //get current active page
-
-        //remove active class fromcurrent page
+        console.log(state.activePage())
+        //remove active class from current page
         currentPage.classList.remove('active');
 
     }
 
     //show next page
     function showNextPage(state) {
-
-        //add active class to next page
-        document.querySelector(`#step-${(state.currentPageNum + 1)}`).classList.add('active');
-
         //update current page number
         state.currentPageNum++;
+
+        //add active class to next page
+        document.querySelector(`#step-${(state.currentPageNum)}`).classList.add('active');
+
+        
     }
 
     function showPreviousPage(state) {
@@ -269,7 +270,7 @@ var controller = (function (UICtrl, dataCtrl) {
     //app state
     var state = {
         activePage: function () {
-            return document.querySelector('.active');
+            return document.querySelector('.step.active');
         },
         activePageChildren: function () {
             return document.querySelector('.active').children;
@@ -331,7 +332,25 @@ var controller = (function (UICtrl, dataCtrl) {
 
         //if next button
         if (event.target.dataset.btn === 'next') {
-            if (UICtrl.validateInput(state) === true) {
+
+            // 1. store user input
+            input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
+
+            // 3. hide current page
+            UICtrl.hideCurrentPage(state);
+
+            // 4. show next next page
+            UICtrl.showNextPage(state);
+
+            /* // 5. update current page state
+            UICtrl.updateCurrentPageState(state) */
+
+        }
+
+        //if next btn on first page
+        if (event.target.dataset.btn === 'next' && state.activePage().id === 'step-1') {
+
+            if (UICtrl.validateInput === true) {
                 // 1. store user input
                 input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
@@ -344,10 +363,10 @@ var controller = (function (UICtrl, dataCtrl) {
                 /* // 5. update current page state
                 UICtrl.updateCurrentPageState(state) */
             }
-
-
+            
 
         }
+
 
         //if multiple answers fancy-radio button is clicked
         if (event.target.dataset.btn === 'check') {
@@ -383,13 +402,11 @@ var controller = (function (UICtrl, dataCtrl) {
             //delete stored answers from current page
             input[`${state.questionType()}`] = null;
 
-            //if returning to first page hide error message
+            // 2. show previous page
+            UICtrl.showPreviousPage(state);
 
             // 1. hide current page
             UICtrl.hideCurrentPage(state);
-
-            // 2. show previous page
-            UICtrl.showPreviousPage(state);
 
         }
 
