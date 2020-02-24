@@ -7,7 +7,7 @@ var dataController = (function () {
 
         function calcBMR() {
 
-            var BMR = (10 * userData.units.weight) + (6.25 * userData.units.height) - (5 * userData.units.age) + 5;
+            var BMR = (10 * userData.units.weight) + (6.25 * userData.units.height) - (5 * userData.units.age);
 
             return BMR;
 
@@ -22,7 +22,7 @@ var dataController = (function () {
         function calcObjective() {
 
             if (userData.weightGoal === '1') {
-                return ((userData.calcBMR() * userData.calcIntensity()) / 100) * 20;
+                return ((calcBMR() * calcIntensity()) / 100) * 20;
             }
 
             if (userData.weightGoal === '2') {
@@ -30,25 +30,34 @@ var dataController = (function () {
             }
 
             if (userData.weightGoal === '3') {
-                return ((userData.calcBMR() * userData.calcIntensity()) / 100) * 10;
+                return ((calcBMR() * calcIntensity()) / 100) * (-10);
             }
         }
 
 
-        function getCalorieIntake(obj) {
+        function getCalorieIntake() {
 
-            if (obj.pol === 'muski') {
+            if (userData.units.pol === 'musko') {
 
-                return (obj.calcBMR() * obj.calcIntensity()) - obj.calcObjective();
+                return (calcBMR() * calcIntensity() + 5) - calcObjective();
 
             }
 
-            if (obj.pol === 'zenski') {
-                return (((10 * obj.tezina) + (6.25 * obj.visina) - (5 * obj.godine) - 161) * obj.intenzitet_treninga) / 10 * obj.weightGoal;
+            if (userData.units.pol === 'zensko') {
+                return (calcBMR() * calcIntensity() - 161) - calcObjective();;
             }
+            return 'An error has occured';
+
         }
+
+        // napraviti da returnuje objekat sa kalkulacijom potrebnih masti potrebnih ugljenih hidrata i potrebnih proteina
+        //return calorie intake requirements
+        return getCalorieIntake();
     }
 
+    return {
+        calculateKeto
+    }
 
 })();
 
@@ -148,7 +157,13 @@ var UIController = (function () {
         var answerType = stateObj.answerType();
         var question = stateObj.questionType();
 
-        var units = {},
+        var units = {
+            pol: '',
+            age: null,
+            height: null,
+            weight: null,
+            target_weight: null
+        },
             excludeMeat = [],
             excludeOthers = [],
             workoutType = null,
@@ -268,7 +283,13 @@ var controller = (function (UICtrl, dataCtrl) {
 
     //user input object
     var input = {
-        units: {},
+        units: {
+            pol: '',
+            age: null,
+            height: null,
+            weight: null,
+            target_weight: null
+        },
         excludeMeat: [],
         excludeOthers: [],
         workoutType: null,
@@ -295,12 +316,66 @@ var controller = (function (UICtrl, dataCtrl) {
         currentPageNum: 1
     }
 
-    //keto calculation
-    var ketoPlan = {};
+
 
 
     //next button handler
     var ctrlBtnHandler = function (event) {
+
+        // if single answer fancy-radio button is clicked
+        if (event.target.dataset.btn === 'single') {
+
+            //if final question is answered - send data to php script
+            if (state.questionMode() === 'final-question') {
+                //keto calculation
+                var ketoPlan;
+
+                // 1. store user input
+                input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
+
+
+                //calculate nutrition needs of user
+                ketoPlan = dataCtrl.calculateKeto(input);
+                console.dir(ketoPlan)
+
+                fetch('php/handle_user_input.php', {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(input),
+                })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+            }
+
+            // if its not final question
+            if (state.questionMode() === 'question') {
+                
+
+                // 1. store user input
+                input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
+
+                // 3. hide current page
+                UICtrl.hideCurrentPage(state);
+
+                // 4. show next next page
+                UICtrl.showNextPage(state);
+
+            }
+
+            
+
+
+        }
         console.log(input)
         //male-female button handler
         if (state.questionType() === 'units' && event.target.dataset.sex) {
@@ -364,56 +439,7 @@ var controller = (function (UICtrl, dataCtrl) {
 
         }
 
-        // if single answer fancy-radio button is clicked
-        if (event.target.dataset.btn === 'single') {
 
-            // if its not final question
-            if (state.questionMode() !== 'final-question') {
-
-                // 1. store user input
-                input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
-
-                // 3. hide current page
-                UICtrl.hideCurrentPage(state);
-
-                // 4. show next next page
-                UICtrl.showNextPage(state);
-
-            }
-
-            //if final question is answered - send data to php script
-            if (state.questionMode() === 'final-question') {
-
-                // 1. store user input
-                input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
-
-
-                //calculate nutrition needs of user
-                /* ketoPlan = dataCtrl.calculateKeto(input); */
-
-
-
-                /* fetch('proracun/proracun.php', {
-                    method: 'POST', // or 'PUT'
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(input),
-                })
-                .then((response) => {
-                    response.json();
-                })
-                .then((data) => {
-                    console.log('Success:', data);
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                }); */
-
-            }
-
-
-        }
 
         //if back button is clicked
         if (event.target.dataset.btn === 'back') {
