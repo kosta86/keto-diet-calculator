@@ -84,12 +84,11 @@ var UIController = (function () {
         var sexSelectionButtons = state.activePage().querySelector('.units-toggler').children;
 
 
-        //check if sex is selected
+        //check if male||female button is selected
         for (var i = 0; i < sexSelectionButtons.length; i++) {
 
             if (sexSelectionButtons[i].classList.contains('active')) {
                 sexNotSelected = false;
-                break;
             } else {
                 sexNotSelected = true;
                 sexSelectionButtons[i].focus();
@@ -99,7 +98,7 @@ var UIController = (function () {
 
 
         }
-        console.log('sexnotslected: ' + sexNotSelected)
+       
 
         //check each field - if empty show error msg 
         for (var i = allInputFields.length - 1; i >= 0; i--) {
