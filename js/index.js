@@ -346,8 +346,22 @@ var controller = (function (UICtrl, dataCtrl) {
                     body: JSON.stringify(ketoPlan),
                 })
                 .then((response) => {
-                    console.log('radi')
-                    window.location.replace('php/handle_user_input.php');
+                    return response.text();
+                })
+                .then((text) => {
+                    document.querySelector('body').textContent = '';
+                    var divELement = document.createElement('div');
+                    document.querySelector('body').appendChild(divELement);
+                    document.querySelector('body > div').classList.add('loader');
+                    setTimeout(() => {
+                        document.querySelector('body > div').classList.remove('loader');
+                        document.querySelector('body').innerHTML = text;
+                    },5000)
+
+                    
+
+                    
+                    /* document.querySelector('html').innerHTML = text; */
                 })
                 .catch((error) => {
                     console.error('Error:', error);
