@@ -343,13 +343,11 @@ var controller = (function (UICtrl, dataCtrl) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(input),
+                    body: JSON.stringify(ketoPlan),
                 })
                 .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log('Success:', data);
+                    console.log('radi')
+                    window.location.replace('php/handle_user_input.php');
                 })
                 .catch((error) => {
                     console.error('Error:', error);
