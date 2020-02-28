@@ -66,6 +66,10 @@ var dataController = (function () {
 //UI controller
 var UIController = (function () {
 
+    function fillResults(dataCtrl, input) {
+        document.getElementById("dnevni-unos-kalorija").textContent = dataCtrl.calculateKeto(input);
+    }
+
     //add active class to selected sex button 
     function addActive(event, state) {
 
@@ -269,7 +273,8 @@ var UIController = (function () {
         showNextPage,
         showPreviousPage,
         addActive,
-        validateInput
+        validateInput,
+        fillResults
         /* updateCurrentPageState, */
         /* activePage */
     }
@@ -327,45 +332,18 @@ var controller = (function (UICtrl, dataCtrl) {
 
             //if final question is answered - send data to php script
             if (state.questionMode() === 'final-question') {
-                //keto calculation
-                var ketoPlan;
 
                 // 1. store user input
                 input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
+                // 2. hide quiz
+                document.getElementById("quiz").classList.add("hide");
 
-                //calculate nutrition needs of user
-                ketoPlan = dataCtrl.calculateKeto(input);
-                console.dir(ketoPlan)
+                // 3. show result page
+                document.getElementById("app").classList.remove("hide");
 
-                fetch('php/handle_user_input.php', {
-                    method: 'POST', // or 'PUT'
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(ketoPlan),
-                })
-                .then((response) => {
-                    return response.text();
-                })
-                .then((text) => {
-                    document.querySelector('body').textContent = '';
-                    var divELement = document.createElement('div');
-                    document.querySelector('body').appendChild(divELement);
-                    document.querySelector('body > div').classList.add('loader');
-                    setTimeout(() => {
-                        document.querySelector('body > div').classList.remove('loader');
-                        document.querySelector('body').innerHTML = text;
-                    },5000)
-
-                    
-
-                    
-                    /* document.querySelector('html').innerHTML = text; */
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+                UICtrl.fillResults(dataCtrl, input)
+                
 
             }
 

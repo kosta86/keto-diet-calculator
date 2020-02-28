@@ -10,17 +10,22 @@
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
-
 /* Safari */
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
 }
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.hide {
+  display: none;
+}
+
+
+
 
 .avocado,
 .back,
@@ -14403,7 +14408,7 @@ input.m-error {
 }
 
 .results-2 #intake img {
-  max-width: 250px;
+  max-width: 250px!important;
   margin-top: 15px
 }
 
@@ -14997,7 +15002,7 @@ input.m-error {
 
 .results-3 .b-result.b-result--weight .b-months:before {
   content: "";
-  background: url(/images/b-results-graph.png);
+  background: url(https://ketocycle.diet/images/b-results-graph.png);
   position: absolute;
   left: 0;
   right: 0;
