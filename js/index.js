@@ -5,12 +5,27 @@ var dataController = (function () {
     //calculate keto plan
     function calculateKeto(userData) {
 
+        function calcBMI() {
+            var BMI;
+            console.log(userData)
+            BMI = userData.units.weight / Math.pow((userData.units.height / 100), 2);
+            
+            return BMI;
+        }
+
         function calcBMR() {
+            var BMR;
+            if (userData.units.pol === 'musko') {
 
-            var BMR = (10 * userData.units.weight) + (6.25 * userData.units.height) - (5 * userData.units.age);
+                BMR = (10 * userData.units.weight) + (6.25 * userData.units.height) - (5 * userData.units.age) + 5;
 
+            }
+            if (userData.units.pol === 'zensko') {
+
+                BMR = (10 * userData.units.weight) + (6.25 * userData.units.height) - (5 * userData.units.age) - 161;
+
+            }
             return BMR;
-
         };
 
         function calcIntensity() {
@@ -37,22 +52,26 @@ var dataController = (function () {
 
         function getCalorieIntake() {
 
-            if (userData.units.pol === 'musko') {
+            /* if (userData.units.pol === 'musko') { */
 
-                return (calcBMR() * calcIntensity() + 5) - calcObjective();
+            return (calcBMR() * calcIntensity()) - calcObjective();
 
-            }
+            /* } */
 
             if (userData.units.pol === 'zensko') {
-                return (calcBMR() * calcIntensity() - 161) - calcObjective();;
+                return (calcBMR() * calcIntensity()) - calcObjective();;
             }
-            return 'An error has occured';
+
 
         }
 
         // napraviti da returnuje objekat sa kalkulacijom potrebnih masti potrebnih ugljenih hidrata i potrebnih proteina
         //return calorie intake requirements
-        return getCalorieIntake();
+        return {
+            getCalorieIntake,
+            calcBMR,
+            calcBMI
+        }
     }
 
     return {
@@ -66,8 +85,20 @@ var dataController = (function () {
 //UI controller
 var UIController = (function () {
 
+    function slideBMIArrow(dataCtrl, input) {
+        var bmiArrow = document.getElementById("bmi-arrow");
+        var containerWidth = document.getElementById('slideBMIArrow').clientWidth();
+        var arrowPosition = containerWidth
+        
+        bmiArrow.style.marginLeft = `${dataCtrl.calculateKeto(input).calcBMI()}px`
+
+    }
+
     function fillResults(dataCtrl, input) {
-        document.getElementById("dnevni-unos-kalorija").textContent = dataCtrl.calculateKeto(input);
+
+        document.getElementById("dnevni-unos-kalorija").textContent = dataCtrl.calculateKeto(input).getCalorieIntake();
+
+        document.getElementById("bmi-value").textContent = dataCtrl.calculateKeto(input).calcBMI().toFixed(1);
     }
 
     //add active class to selected sex button 
@@ -274,7 +305,8 @@ var UIController = (function () {
         showPreviousPage,
         addActive,
         validateInput,
-        fillResults
+        fillResults,
+        slideBMIArrow
         /* updateCurrentPageState, */
         /* activePage */
     }
@@ -321,6 +353,14 @@ var controller = (function (UICtrl, dataCtrl) {
         currentPageNum: 1
     }
 
+    var userInfo = {
+        userBMI: function() {
+            return dataCtrl.calculateKeto().calcBMI();
+        },
+        userBMR: dataCtrl.calculateKeto().calcBMR,
+        userCalorie: dataCtrl.calculateKeto().getCalorieIntake
+    }
+
 
 
 
@@ -341,15 +381,22 @@ var controller = (function (UICtrl, dataCtrl) {
 
                 // 3. show result page
                 document.getElementById("app").classList.remove("hide");
+                document.getElementById("app").classList.add("active");
 
-                UICtrl.fillResults(dataCtrl, input)
-                
+                var resultActive = new Event('resultActive');
+
+                // Dispatch the event.
+                document.dispatchEvent(resultActive);
+
+                /* UICtrl.fillResults(dataCtrl, input);
+
+                UICtrl.slideBMIArrow(dataCtrl.calculateKeto().calcBMI()) */
+
 
             }
 
             // if its not final question
             if (state.questionMode() === 'question') {
-                
 
                 // 1. store user input
                 input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
@@ -362,7 +409,7 @@ var controller = (function (UICtrl, dataCtrl) {
 
             }
 
-            
+
 
 
         }
@@ -447,6 +494,34 @@ var controller = (function (UICtrl, dataCtrl) {
         }
 
     }
+
+    /* var resultsPageActive = new CustomEvent('resultsActive', {
+        active: document.getElementById('app').classList.contains('active')
+    })
+    document.addEventListener('resultsActive', function(e) {
+        if (process.e.active) {
+            console.log('radi');
+        }
+        
+    })
+
+    document.dispatchEvent(resultsPageActive) */
+
+
+
+    function doEverything(user) {
+        UICtrl.fillResults(dataCtrl, input);
+        
+        UICtrl.slideBMIArrow(dataCtrl, input);
+    }
+    // Listen for the event.
+    document.addEventListener('resultActive', function (e) { 
+        
+        doEverything(userInfo);
+         
+
+    }, false);
+
 
     //******* ILI napravi da event listener bude samo na dugmicima za next i fancy-radio pa u callbacku rokaj if statemente u slucaju da je single odgovor ili checkbox */
     //'NEXT BUTTON' click event listener
