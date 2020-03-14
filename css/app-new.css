@@ -11575,8 +11575,7 @@ a.text-dark:hover {
     size: a3
   }
 
-  .container,
-  body {
+  .container, body {
     min-width: 992px !important
   }
 

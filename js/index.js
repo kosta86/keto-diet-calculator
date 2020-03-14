@@ -1,4 +1,3 @@
-
 //DATA controller
 var dataController = (function () {
 
@@ -9,7 +8,7 @@ var dataController = (function () {
             var BMI;
             console.log(userData)
             BMI = userData.units.weight / Math.pow((userData.units.height / 100), 2);
-            
+
             return BMI;
         }
 
@@ -52,17 +51,7 @@ var dataController = (function () {
 
         function getCalorieIntake() {
 
-            /* if (userData.units.pol === 'musko') { */
-
             return (calcBMR() * calcIntensity()) - calcObjective();
-
-            /* } */
-
-            if (userData.units.pol === 'zensko') {
-                return (calcBMR() * calcIntensity()) - calcObjective();;
-            }
-
-
         }
 
         // napraviti da returnuje objekat sa kalkulacijom potrebnih masti potrebnih ugljenih hidrata i potrebnih proteina
@@ -85,13 +74,58 @@ var dataController = (function () {
 //UI controller
 var UIController = (function () {
 
-    function slideBMIArrow(dataCtrl, input) {
+    /* function slideBMIArrow(dataCtrl, input) {
         var bmiArrow = document.getElementById("bmi-arrow");
         var containerWidth = document.getElementById('slideBMIArrow').clientWidth();
         var arrowPosition = containerWidth
         
         bmiArrow.style.marginLeft = `${dataCtrl.calculateKeto(input).calcBMI()}px`
 
+    } */
+
+
+    function openSubscribeModal() {
+        // instanciate new modal
+        var modal = new tingle.modal({
+            footer: true,
+            stickyFooter: false,
+            closeMethods: ['overlay', 'escape'],
+            closeLabel: "Zatvori",
+            cssClass: ['modal-form.css', 'custom-class-2'],
+            /* onOpen: function () {
+                console.log('modal open');
+            },
+            onClose: function () {
+                console.log('modal closed');
+            },
+            beforeClose: function () {
+                // here's goes some logic
+                // e.g. save content before closing the modal
+                return true; // close the modal
+                return false; // nothing happens
+            } */
+        });
+
+        var contenet = ''
+
+        // set content
+        modal.setContent('<div class="main"> <div class="bg"></div> <div class="bg2"></div> <div class="content"> <div class="button-container"> <button type="submit" class="button" form="subscribe-form" onclick="materialClick(event)"> <div class="circle animate"></div><span class="sign-in">Sign in</span> <div class="loader"></div> </button> </div> <div class="controls"> <div class="icon"> <div class="bar bar1"></div> <div class="bar bar2"></div> </div> <form id="subscribe-form" action="php/subscribe.php" method="POST"> <div class="inputs"> <svg class="login" xmlns="http://www.w3.org/2000/svg" width="44" height="40" viewBox="0 0 44 40"> <g stroke="#fff" fill="none" stroke-width="3.538" transform="translate(0 -1012.362)"> <ellipse ry="8.09" rx="8.244" cy="1022.221" cx="21.555" stroke-linecap="round" /> <path d="M1.858 1046.4c-.79 4.74 3.805 4.11 3.805 4.11H37.88s4.846.936 4.312-3.854c-.533-4.79-6.076-10.937-20.04-11.043-13.964-.106-19.504 6.047-20.294 10.786z" /> </g> </svg> <input class="input" name="ime" type="text" placeholder="Ime i prezime"> <svg class="lock" xmlns="http://www.w3.org/2000/svg" width="44" height="46" viewBox="0 0 44 46"> <g transform="translate(-28.15 -974.678)" stroke="#fff" fill="none" stroke-width="3.509"> <rect ry="3.136" y="995.18" x="29.903" height="23.743" width="40.491" stroke-linecap="round" /> <path d="M49.386 1004.406v4.788" stroke-linecap="round" /> <path d="M37.073 994.83s-1.39-18.398 12.97-18.398c14.36 0 12.207 18.397 12.207 18.397" /> </g> </svg> <input class="input" name="email" type="email" placeholder="E-mail"> </div> </form> </div> </div> <script src="anime.min.js"></script> <script src="il.js"></script></div>');
+
+        // add a button
+        modal.addFooterBtn('Button label', 'tingle-btn tingle-btn--primary', function () {
+            // here goes some logic
+            modal.close();
+        });
+
+        // add another button
+        modal.addFooterBtn('Dangerous action !', 'tingle-btn tingle-btn--danger', function () {
+            // here goes some logic
+            modal.close();
+        });
+
+
+
+        return modal;
     }
 
     function fillResults(dataCtrl, input) {
@@ -306,7 +340,8 @@ var UIController = (function () {
         addActive,
         validateInput,
         fillResults,
-        slideBMIArrow
+        openSubscribeModal,
+        /* slideBMIArrow */
         /* updateCurrentPageState, */
         /* activePage */
     }
@@ -354,7 +389,7 @@ var controller = (function (UICtrl, dataCtrl) {
     }
 
     var userInfo = {
-        userBMI: function() {
+        userBMI: function () {
             return dataCtrl.calculateKeto().calcBMI();
         },
         userBMR: dataCtrl.calculateKeto().calcBMR,
@@ -382,6 +417,7 @@ var controller = (function (UICtrl, dataCtrl) {
                 // 3. show result page
                 document.getElementById("app").classList.remove("hide");
                 document.getElementById("app").classList.add("active");
+                document.querySelector(".desktop-container").classList.remove('desktop-container');
 
                 var resultActive = new Event('resultActive');
 
@@ -391,7 +427,6 @@ var controller = (function (UICtrl, dataCtrl) {
                 /* UICtrl.fillResults(dataCtrl, input);
 
                 UICtrl.slideBMIArrow(dataCtrl.calculateKeto().calcBMI()) */
-
 
             }
 
@@ -493,6 +528,25 @@ var controller = (function (UICtrl, dataCtrl) {
 
         }
 
+
+        //results page buttons 
+        if (event.target.dataset.btn === 'subscribe') {
+
+            //open modal form for subscription
+            UICtrl.openSubscribeModal().open();
+
+        }
+
+        //if clicked on submit form button
+        if (event.target.dataset.btn === 'submit-form') {
+            var subscribeForm = document.getElementById('subscribe-form');
+
+            //submit form to subscribe.php
+            subscribeForm.submit();
+            
+
+        }
+
     }
 
     /* var resultsPageActive = new CustomEvent('resultsActive', {
@@ -509,16 +563,16 @@ var controller = (function (UICtrl, dataCtrl) {
 
 
 
-    function doEverything(user) {
+    function fillInResults(user) {
         UICtrl.fillResults(dataCtrl, input);
-        
-        UICtrl.slideBMIArrow(dataCtrl, input);
+
+        /* UICtrl.slideBMIArrow(dataCtrl, input); */
     }
     // Listen for the event.
-    document.addEventListener('resultActive', function (e) { 
-        
-        doEverything(userInfo);
-         
+    document.addEventListener('resultActive', function (e) {
+
+        fillInResults(userInfo);
+
 
     }, false);
 
