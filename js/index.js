@@ -64,7 +64,7 @@ var dataController = (function () {
             function calcDailyProteins(dailyCalories) {
 
                 var proteinsInKcal = (proteinPercentage / 100) * calcDailyCalories();
-                var proteinsInGrams = proteinKcal / 4;
+                var proteinsInGrams = proteinsInKcal / 4;
 
                 return proteinsInGrams;
 
@@ -81,17 +81,17 @@ var dataController = (function () {
             function calcDailyFats(dailyCalories) {
 
                 var fatsInKcal = (carbPercentage / 100) * calcDailyCalories();
-                var fatsInGram = fatsInKcal / 9;
+                var fatsInGrams = fatsInKcal / 9;
 
                 return fatsInGrams;
             }
 
             // returns daily needs 
             return {
-                dailyCalories: calcDailyCalories(), // in calories
-                dailyProteins: calcDailyProteins(), // in grams
-                dailyCarbs: calcDailyCarbs(),       // in grams
-                dailyFat: calcDailyFats(),          // in grams
+                calories: calcDailyCalories(), // in calories
+                proteins: calcDailyProteins(), // in grams
+                carbs: calcDailyCarbs(),       // in grams
+                fat: calcDailyFats(),          // in grams
             }
         }
 
@@ -106,7 +106,7 @@ var dataController = (function () {
     }
 
     return {
-        calculateKeto: calculateKeto() //objekat sa svim kalkulacijama
+        calculateKeto //funkcija za izracunavanje dnevnih potreba za unosom nutrienata(trazi argument sa podacima korisnika)
     }
 
 })();
@@ -252,11 +252,11 @@ var UIController = (function () {
         return modal;
     }
 
-    function fillResults(dataCtrl, input) {
+    function fillResults(userCalculatedValues, input) {
 
-        document.getElementById("dnevni-unos-kalorija").textContent = dataCtrl.calculateKeto(input).getCalorieIntake();
+        document.getElementById("dnevni-unos-kalorija").textContent = userCalculatedValues.dailyNeeds.calories;
 
-        document.getElementById("bmi-value").textContent = dataCtrl.calculateKeto(input).calcBMI().toFixed(1);
+        document.getElementById("bmi-value").textContent = userCalculatedValues.userBMI.toFixed(1);
     }
 
     //add active class to selected sex button 
@@ -648,13 +648,15 @@ var controller = (function (UICtrl, dataCtrl) {
         }
 
 
-        //results page buttons 
+        //if clicked on Get Your Plan button
         if (event.target.dataset.btn === 'subscribe') {
 
             //open modal form for subscription
             UICtrl.openSubscribeModal().open();
+            UICtrl.showModalForm();
 
         }
+
 
         //if clicked on submit form button
         if (event.target.dataset.btn === 'submit-form') {
@@ -685,16 +687,15 @@ var controller = (function (UICtrl, dataCtrl) {
 
 
 
-    function fillInResults(user) {
+    /* function fillInResults(user) {
         UICtrl.fillResults(dataCtrl, input);
+    } */
 
-        /* UICtrl.slideBMIArrow(dataCtrl, input); */
-    }
     // Listen for the event.
     document.addEventListener('resultActive', function (e) {
 
-        fillInResults(userCalculatedValues);
-        window.kalorije = userCalculatedValues.getCalorieIntake();
+        UICtrl.fillResults(userCalculatedValues, input);
+        /* window.kalorije = userCalculatedValues.getCalorieIntake(); */
 
     }, false);
 
@@ -723,6 +724,6 @@ var controller = (function (UICtrl, dataCtrl) {
     }
 })(UIController, dataController)
 
-var kalorije;
+/* var kalorije;
 
-kalorije = controller.userCalculatedValues.getCalorieIntake();
+kalorije = controller.userCalculatedValues.getCalorieIntake(); */
