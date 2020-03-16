@@ -4,7 +4,7 @@
 
   <div class="content">
     <div class="button-container">
-      <button type="submit" class="button" form="subscribe-form" onclick="materialClick(event)">
+      <button class="button" onclick="materialClick(event)">
         <div class="circle animate"></div><span class="sign-in">Sign in</span>
         <div class="loader"></div>
       </button>
@@ -32,6 +32,11 @@
             </g>
           </svg>
           <input class="input" name="email" type="email" placeholder="E-mail">
+          <input id="input_kalorije" type="hidden" name="kalorije" value="">
+          <input id="input_proteini" type="hidden" name="proteini" value="">
+          <input id="input_ugljeni_hidrati" type="hidden" name="ugljeni_hidrati" value="">
+          <input id="input_masti" type="hidden" name="masti" value="">
+          <input type="submit">
         </div>
       </form>
     </div>

@@ -49,22 +49,64 @@ var dataController = (function () {
         }
 
 
-        function getCalorieIntake() {
+    
+        function calcDailyNeeds(proteinPercentage = 25, carbPercentage = 10, fatPercentage = 65) {
 
-            return (calcBMR() * calcIntensity()) - calcObjective();
+            if (proteinPercentage + fatPercentage + carbPercentage !== 100) {
+                throw 'nutrient percentages are not equal to 100% in calcDailyNeeds function';
+            }
+
+            function calcDailyCalories() {
+
+                return (calcBMR() * calcIntensity()) - calcObjective();
+            }
+
+            function calcDailyProteins(dailyCalories) {
+
+                var proteinsInKcal = (proteinPercentage / 100) * calcDailyCalories();
+                var proteinsInGrams = proteinKcal / 4;
+
+                return proteinsInGrams;
+
+            }
+
+            function calcDailyCarbs(dailyCalories) {
+
+                var carbsInKcal = (carbPercentage / 100) * calcDailyCalories();
+                var carbsInGrams = carbsInKcal / 4;
+
+                return carbsInGrams;
+            }
+
+            function calcDailyFats(dailyCalories) {
+
+                var fatsInKcal = (carbPercentage / 100) * calcDailyCalories();
+                var fatsInGram = fatsInKcal / 9;
+
+                return fatsInGrams;
+            }
+
+            // returns daily needs 
+            return {
+                dailyCalories: calcDailyCalories(), // in calories
+                dailyProteins: calcDailyProteins(), // in grams
+                dailyCarbs: calcDailyCarbs(),       // in grams
+                dailyFat: calcDailyFats(),          // in grams
+            }
         }
 
-        // napraviti da returnuje objekat sa kalkulacijom potrebnih masti potrebnih ugljenih hidrata i potrebnih proteina
-        //return calorie intake requirements
+
+        // returnuje objekat sa svim kalkulacijama 
         return {
-            getCalorieIntake,
-            calcBMR,
-            calcBMI
+            dailyNeeds: calcDailyNeeds(),
+            userBMR: calcBMR(),
+            userBMI: calcBMI(),
+            
         }
     }
 
     return {
-        calculateKeto
+        calculateKeto: calculateKeto() //objekat sa svim kalkulacijama
     }
 
 })();
@@ -74,14 +116,96 @@ var dataController = (function () {
 //UI controller
 var UIController = (function () {
 
-    /* function slideBMIArrow(dataCtrl, input) {
-        var bmiArrow = document.getElementById("bmi-arrow");
-        var containerWidth = document.getElementById('slideBMIArrow').clientWidth();
-        var arrowPosition = containerWidth
-        
-        bmiArrow.style.marginLeft = `${dataCtrl.calculateKeto(input).calcBMI()}px`
+    function fillHiddenInputs(userCalculatedValues) {
+        var kalorijeInput = document.getElementById('input_kalorije');
+        var proteiniInput = document.getElementById('input_proteini');
+        var ugljeniHidratiInput = document.getElementById('input_ugljeni_hidrati');
+        var mastiInput = document.getElementById('input_masti');
+        kalorijeInput.value = window.kalorije;
+    }
 
-    } */
+    function sendCalculatedDataToDatabase(userCalculatedValues) {
+        var subscribeForm = document.querySelector('form');
+        
+        subscribeForm.submit();
+    }
+
+    function showModalForm() {
+        var img = new Image()
+        img.src = 'trees.jpg';
+
+        var bg;
+        var bg2;
+        var topc;
+        var calendar;
+        var content;
+        var controls;
+        var circle;
+        var bc;
+        var button;
+        var signIn;
+        var loader;
+        var x;
+        var y;
+
+
+        function materialClick(event) {
+            bg = document.querySelector('.bg');
+            bg2 = document.querySelector('.bg2');
+            topc = document.querySelector('.top');
+            calendar = document.querySelector('.calendar');
+            content = document.querySelector('.content');
+            controls = document.querySelector('.controls');
+            circle = document.querySelector('.circle');
+            bc = document.querySelector('.button-container');
+            button = document.querySelector('.button');
+            signIn = document.querySelector('.sign-in');
+            loader = document.querySelector('.loader');
+            x = event.offsetX - circle.offsetWidth / 2;
+            y = event.offsetY - circle.offsetHeight / 2;
+
+
+
+            circle.classList.remove('animate');
+            circle.style.left = x + 'px';
+            circle.style.top = y + 'px';
+            bc.style.zIndex = 1;
+            setTimeout(function () {
+                circle.classList.add('animate');
+                button.classList.add('animate');
+                signIn.classList.add('animate');
+                loader.classList.add('animate');
+                setTimeout(function () {
+                    loader.classList.add('animateOut');
+                }, 1000);
+                setTimeout(function () {
+                    var subscribeForm = document.querySelector('form');
+                    var kalorijeInput = document.getElementById('input_kalorije');
+                    kalorijeInput.value = window.kalorije;
+                    subscribeForm.submit();
+                    /* window.location.href = "success.html"; */
+                }, 1460);
+            }, 50);
+
+        }
+
+        function restart() {
+            bc.style.zIndex = 0;
+            button.classList.remove('animate');
+            signIn.classList.remove('animate');
+            loader.classList.remove('animate');
+            loader.classList.remove('animateOut');
+            controls.classList.remove('hidden');
+            bg.classList.remove('no-image');
+            bg2.classList.remove('visible');
+            topc.classList.remove('visible');
+            calendar.classList.remove('visible');
+            content.classList.remove('removed');
+            document.querySelectorAll('.input').forEach(input => input.value = '');
+        }
+    }
+
+
 
 
     function openSubscribeModal() {
@@ -109,7 +233,7 @@ var UIController = (function () {
         var contenet = ''
 
         // set content
-        modal.setContent('<div class="main"> <div class="bg"></div> <div class="bg2"></div> <div class="content"> <div class="button-container"> <button type="submit" class="button" form="subscribe-form" onclick="materialClick(event)"> <div class="circle animate"></div><span class="sign-in">Sign in</span> <div class="loader"></div> </button> </div> <div class="controls"> <div class="icon"> <div class="bar bar1"></div> <div class="bar bar2"></div> </div> <form id="subscribe-form" action="php/subscribe.php" method="POST"> <div class="inputs"> <svg class="login" xmlns="http://www.w3.org/2000/svg" width="44" height="40" viewBox="0 0 44 40"> <g stroke="#fff" fill="none" stroke-width="3.538" transform="translate(0 -1012.362)"> <ellipse ry="8.09" rx="8.244" cy="1022.221" cx="21.555" stroke-linecap="round" /> <path d="M1.858 1046.4c-.79 4.74 3.805 4.11 3.805 4.11H37.88s4.846.936 4.312-3.854c-.533-4.79-6.076-10.937-20.04-11.043-13.964-.106-19.504 6.047-20.294 10.786z" /> </g> </svg> <input class="input" name="ime" type="text" placeholder="Ime i prezime"> <svg class="lock" xmlns="http://www.w3.org/2000/svg" width="44" height="46" viewBox="0 0 44 46"> <g transform="translate(-28.15 -974.678)" stroke="#fff" fill="none" stroke-width="3.509"> <rect ry="3.136" y="995.18" x="29.903" height="23.743" width="40.491" stroke-linecap="round" /> <path d="M49.386 1004.406v4.788" stroke-linecap="round" /> <path d="M37.073 994.83s-1.39-18.398 12.97-18.398c14.36 0 12.207 18.397 12.207 18.397" /> </g> </svg> <input class="input" name="email" type="email" placeholder="E-mail"> </div> </form> </div> </div> <script src="anime.min.js"></script> <script src="il.js"></script></div>');
+        modal.setContent('<div class="main"> <div class="bg"></div> <div class="bg2"></div> <div class="content"> <div class="button-container"> <button class="button" onclick="materialClick(event)"> <div class="circle animate"></div><span class="sign-in">Sign in</span> <div class="loader"></div> </button> </div> <div class="controls"> <div class="icon"> <div class="bar bar1"></div> <div class="bar bar2"></div> </div> <form id="subscribe-form" action="php/subscribe.php" method="POST"> <div class="inputs"> <svg class="login" xmlns="http://www.w3.org/2000/svg" width="44" height="40" viewBox="0 0 44 40"> <g stroke="#fff" fill="none" stroke-width="3.538" transform="translate(0 -1012.362)"> <ellipse ry="8.09" rx="8.244" cy="1022.221" cx="21.555" stroke-linecap="round" /> <path d="M1.858 1046.4c-.79 4.74 3.805 4.11 3.805 4.11H37.88s4.846.936 4.312-3.854c-.533-4.79-6.076-10.937-20.04-11.043-13.964-.106-19.504 6.047-20.294 10.786z" /> </g> </svg> <input class="input" name="ime" type="text" placeholder="Ime i prezime"> <svg class="lock" xmlns="http://www.w3.org/2000/svg" width="44" height="46" viewBox="0 0 44 46"> <g transform="translate(-28.15 -974.678)" stroke="#fff" fill="none" stroke-width="3.509"> <rect ry="3.136" y="995.18" x="29.903" height="23.743" width="40.491" stroke-linecap="round" /> <path d="M49.386 1004.406v4.788" stroke-linecap="round" /> <path d="M37.073 994.83s-1.39-18.398 12.97-18.398c14.36 0 12.207 18.397 12.207 18.397" /> </g> </svg> <input class="input" name="email" type="email" placeholder="E-mail"> <input id="input_kalorije" type="hidden" name="kalorije" value=""> <input type="submit"> </div> </form> </div> </div> <script src="anime.min.js"></script> <script src="il.js"></script></div>');
 
         // add a button
         modal.addFooterBtn('Button label', 'tingle-btn tingle-btn--primary', function () {
@@ -388,13 +512,8 @@ var controller = (function (UICtrl, dataCtrl) {
         currentPageNum: 1
     }
 
-    var userInfo = {
-        userBMI: function () {
-            return dataCtrl.calculateKeto().calcBMI();
-        },
-        userBMR: dataCtrl.calculateKeto().calcBMR,
-        userCalorie: dataCtrl.calculateKeto().getCalorieIntake
-    }
+    // objekat iskalkulisanih vrednosti za keto dijetu
+    var userCalculatedValues = dataCtrl.calculateKeto(input);
 
 
 
@@ -540,10 +659,13 @@ var controller = (function (UICtrl, dataCtrl) {
         //if clicked on submit form button
         if (event.target.dataset.btn === 'submit-form') {
             var subscribeForm = document.getElementById('subscribe-form');
+            console.log(userCalculatedValues)
 
             //submit form to subscribe.php
             subscribeForm.submit();
-            
+
+
+
 
         }
 
@@ -571,8 +693,8 @@ var controller = (function (UICtrl, dataCtrl) {
     // Listen for the event.
     document.addEventListener('resultActive', function (e) {
 
-        fillInResults(userInfo);
-
+        fillInResults(userCalculatedValues);
+        window.kalorije = userCalculatedValues.getCalorieIntake();
 
     }, false);
 
@@ -595,4 +717,12 @@ var controller = (function (UICtrl, dataCtrl) {
         // 3. update current page state
     })
 
+
+    return {
+        userCalculatedValues
+    }
 })(UIController, dataController)
+
+var kalorije;
+
+kalorije = controller.userCalculatedValues.getCalorieIntake();
