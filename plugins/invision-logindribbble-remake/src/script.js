@@ -47,10 +47,10 @@
         loader.classList.add('animateOut');
       }, 1000);
       setTimeout(function () {
-        var subscribeForm = document.querySelector('form');
+        /* var subscribeForm = document.querySelector('form');
         var kalorijeInput = document.getElementById('input_kalorije');
         kalorijeInput.value = window.kalorije;
-        subscribeForm.submit();
+        subscribeForm.submit(); */
         /* window.location.href = "success.html"; */
       }, 1460);
     }, 50);
