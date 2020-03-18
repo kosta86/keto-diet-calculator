@@ -2,7 +2,7 @@
 <?php
 
 
-$connect = new PDO('mysql:host=localhost;dbname=keto', 'root', 'password');
+$connect = new PDO('mysql:host=localhost;dbname=keto', 'kosta86', 'kosta1986');
 
 ?>
 
