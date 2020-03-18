@@ -6,7 +6,7 @@ var dataController = (function () {
 
         function calcBMI() {
             var BMI;
-            console.log(userData)
+
             BMI = userData.units.weight / Math.pow((userData.units.height / 100), 2);
 
             return BMI;
@@ -55,39 +55,37 @@ var dataController = (function () {
             if (proteinPercentage + fatPercentage + carbPercentage !== 100) {
                 throw 'nutrient percentages are not equal to 100% in calcDailyNeeds function';
             }
-            
+
 
             function calcDailyCalories() {
 
                 return (calcBMR() * calcIntensity()) - calcObjective();
             }
 
-            function calcDailyProteins(dailyCalories) {
+            function calcDailyProteins(calories) {
 
-                var proteinsInKcal = (proteinPercentage / 100) * calcDailyCalories();
+                var proteinsInKcal = (proteinPercentage / 100) * calories;
                 var proteinsInGrams = proteinsInKcal / 4;
 
                 return proteinsInGrams;
 
             }
 
-            function calcDailyCarbs(dailyCalories) {
+            function calcDailyCarbs(calories) {
 
-                var carbsInKcal = (carbPercentage / 100) * calcDailyCalories();
+                var carbsInKcal = (carbPercentage / 100) * calories;
                 var carbsInGrams = carbsInKcal / 4;
 
                 return carbsInGrams;
             }
 
-            function calcDailyFats(dailyCalories) {
+            function calcDailyFats(calories) {
 
-                var fatsInKcal = (carbPercentage / 100) * calcDailyCalories();
+                var fatsInKcal = (carbPercentage / 100) * calories;
                 var fatsInGrams = fatsInKcal / 9;
 
                 return fatsInGrams;
             }
-            
-            console.log(calcDailyProteins(2000))
 
             // returns daily needs 
             return {
@@ -99,16 +97,16 @@ var dataController = (function () {
 
             }
         }
-        calcDailyNeeds();
+        
 
-        console.log(calcDailyNeeds().calories)
+        
         // returnuje objekat sa svim kalkulacijama 
         return {
             dailyNeeds: {
-                calories: calcDailyNeeds().calories,
-                proteins: calcDailyNeeds().proteins,
-                carbs: calcDailyNeeds().carbs,
-                fats: calcDailyNeeds().fats
+                calories: calcDailyNeeds().calories,                      // in calories
+                proteins: calcDailyNeeds().proteins,   // in grams
+                carbs: calcDailyNeeds().carbs,       // in grams
+                fats: calcDailyNeeds().fats,          // in grams
             },
             userBMR: calcBMR(),
             userBMI: calcBMI(),
@@ -117,7 +115,7 @@ var dataController = (function () {
     }
 
     return {
-        calculateKeto //funkcija za izracunavanje dnevnih potreba za unosom nutrienata(zahteva argument sa podacima korisnika)
+        calculateKeto, //funkcija za izracunavanje dnevnih potreba za unosom nutrienata(zahteva argument sa podacima korisnika)
     }
 
 })();
@@ -127,20 +125,18 @@ var dataController = (function () {
 //UI controller
 var UIController = (function () {
 
-    function fillHiiddenInputs(userCalculatedValues) {
+    function fillHiddenInputs(userCalculatedValues) {
         var caloriesInput = document.getElementById('input_kalorije');
         var proteinsInput = document.getElementById('input_proteini');
         var carbsInput = document.getElementById('input_ugljeni_hidrati');
         var fatsInput = document.getElementById('input_masti');
 
-        
+
 
         caloriesInput.value = userCalculatedValues.dailyNeeds.calories;
         proteinsInput.value = userCalculatedValues.dailyNeeds.proteins;
         carbsInput.value = userCalculatedValues.dailyNeeds.carbs;
         fatsInput.value = userCalculatedValues.dailyNeeds.fats;
-
-        console.log(userCalculatedValues.dailyNeeds.calories)
     }
 
     function sendCalculatedDataToDatabase(event, form) {
@@ -180,8 +176,8 @@ var UIController = (function () {
             event.preventDefault()
             bg = document.querySelector('.bg');
             bg2 = document.querySelector('.bg2');
-            topc = document.querySelector('.top');
-            calendar = document.querySelector('.calendar');
+            /* topc = document.querySelector('.top');
+            calendar = document.querySelector('.calendar'); */
             content = document.querySelector('.content');
             controls = document.querySelector('.controls');
             circle = document.querySelector('.circle');
@@ -226,8 +222,8 @@ var UIController = (function () {
             controls.classList.remove('hidden');
             bg.classList.remove('no-image');
             bg2.classList.remove('visible');
-            topc.classList.remove('visible');
-            calendar.classList.remove('visible');
+            /* topc.classList.remove('visible');
+            calendar.classList.remove('visible'); */
             content.classList.remove('removed');
             document.querySelectorAll('.input').forEach(input => input.value = '');
         }
@@ -249,10 +245,11 @@ var UIController = (function () {
             closeMethods: ['overlay', 'escape'],
             closeLabel: "Zatvori",
             cssClass: ['modal-form.css', 'custom-class-2'],
-            /* onOpen: function () {
+            onOpen: function () {
                 console.log('modal open');
             },
             onClose: function () {
+                modal.close();
                 console.log('modal closed');
             },
             beforeClose: function () {
@@ -260,7 +257,7 @@ var UIController = (function () {
                 // e.g. save content before closing the modal
                 return true; // close the modal
                 return false; // nothing happens
-            } */
+            }
         });
 
         var contentHTML = `<div class="main">
@@ -545,7 +542,7 @@ var UIController = (function () {
         fillResults,
         createSubscribeModal,
         showModalForm,
-        fillHiiddenInputs,
+        fillHiddenInputs,
         sendCalculatedDataToDatabase
 
         /* slideBMIArrow */
@@ -595,38 +592,39 @@ var controller = (function (UICtrl, dataCtrl) {
         currentPageNum: 1
     }
 
+    // users calculated values for keto diet
+    var userCalculatedValues;
+    
     var subscribeModal = UICtrl.createSubscribeModal();
 
 
     //next button handler
     var ctrlBtnHandler = function (event) {
-        event.preventDefault();
-
+        /* var userCalculatedValues; */
         // if single answer fancy-radio button is clicked
         if (event.target.dataset.btn === 'single') {
 
             //if final question is answered - send data to php script
             if (state.questionMode() === 'final-question') {
-
-                // 1. store user input
+                
+                // store user input
                 input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
-                // 2. hide quiz
+                // store user calculated values
+                userCalculatedValues = dataCtrl.calculateKeto(input);
+
+                // hide quiz
                 document.getElementById("quiz").classList.add("hide");
 
-                // 3. show result page
+                // show result page
                 document.getElementById("app").classList.remove("hide");
                 document.getElementById("app").classList.add("active");
                 document.querySelector(".desktop-container").classList.remove('desktop-container');
 
                 var resultActive = new Event('resultActive');
 
-                // Dispatch the event.
-                document.dispatchEvent(resultActive);
-
-                /* UICtrl.fillResults(dataCtrl, input);
-
-                UICtrl.slideBMIArrow(dataCtrl.calculateKeto().calcBMI()) */
+                // populate results page with user calculated values and user data
+                UICtrl.fillResults(userCalculatedValues, input);
 
             }
 
@@ -648,7 +646,6 @@ var controller = (function (UICtrl, dataCtrl) {
 
 
         }
-        console.log(input)
         //male-female button handler
         if (state.questionType() === 'units' && event.target.dataset.sex) {
             UICtrl.addActive(event, state);
@@ -661,7 +658,7 @@ var controller = (function (UICtrl, dataCtrl) {
 
 
                 if (UICtrl.validateInput(state) === true) {
-                    console.log('running validate input...')
+
                     // 1. store user input
                     input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
@@ -728,7 +725,7 @@ var controller = (function (UICtrl, dataCtrl) {
 
         }
 
-        
+
         //if clicked on Get Your Plan button
         if (event.target.dataset.btn === 'subscribe') {
 
@@ -740,8 +737,7 @@ var controller = (function (UICtrl, dataCtrl) {
 
         //if clicked on submit form button
         if (event.target.dataset.btn === 'submit-form') {
-            // objekat iskalkulisanih vrednosti za keto dijetu
-            var userCalculatedValues = dataCtrl.calculateKeto(input);
+            console.log(userCalculatedValues)
             var form = document.getElementById('subscribe-form');
             var modalForm = UICtrl.showModalForm();
 
@@ -749,7 +745,7 @@ var controller = (function (UICtrl, dataCtrl) {
             modalForm.materialClick(event);
 
             //fill in hidden inputs with user calculated data
-            UICtrl.fillHiiddenInputs(userCalculatedValues);
+            UICtrl.fillHiddenInputs(userCalculatedValues);
 
             //submit form to subscribe.php
             UICtrl.sendCalculatedDataToDatabase(event, form);
@@ -757,10 +753,10 @@ var controller = (function (UICtrl, dataCtrl) {
             //reset the modal form
             modalForm.restart();
 
-           /*  //close the modal container
-            subscribeModal.close(); */
+            /*  //close the modal container
+             subscribeModal.close(); */
 
-            
+
 
 
         }

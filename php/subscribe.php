@@ -1,17 +1,20 @@
 <?php
 
 include('database_connection.php');
+if (isset($_POST)) {
 
-$post_ime = $_POST["ime"];
-$post_email = $_POST["email"];
-$post_kalorije = $_POST["kalorije"];
-echo $post_kalorije;
+  $user_ime = $_POST["ime"];
+  $user_email = $_POST["email"];
+  $user_kalorije = round($_POST["kalorije"]);
+  echo $user_kalorije;
 
-$query = "INSERT INTO korisnici (Ime,Email) VALUES (:Ime, :Email)";
+  $query = "INSERT INTO korisnici (Ime,Email,Dnevno_kalorija) VALUES (:Ime, :Email, :Dnevno_kalorija)";
 
-$statement = $connect->prepare($query);
-$statement->bindParam(':Ime', $post_ime);
-$statement->bindPAram(':Email', $post_email);
+  $statement = $connect->prepare($query);
+  $statement->bindParam(':Ime', $user_ime);
+  $statement->bindPAram(':Email', $user_email);
+  $statement->bindPAram(':Dnevno_kalorija', $user_kalorije);
 
-$statement->execute();
-
+  $statement->execute();
+  
+}
