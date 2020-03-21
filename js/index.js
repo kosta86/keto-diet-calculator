@@ -97,9 +97,9 @@ var dataController = (function () {
 
             }
         }
-        
 
-        
+
+
         // returnuje objekat sa svim kalkulacijama 
         return {
             dailyNeeds: {
@@ -141,10 +141,309 @@ var UIController = (function () {
 
     function sendCalculatedDataToDatabase(event, form) {
         var sedmodnepusigavniPlan = {
+            dan: {
+              '1': {
+                dorucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                rucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                vecera: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+              },
+              '2': {
+                dorucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                rucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                vecera: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+              },
+              '3': {
+                dorucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                rucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                vecera: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+              },
+              '4': {
+                dorucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                rucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                vecera: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+              },
+              '5': {
+                dorucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                rucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                vecera: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+              },
+              '6': {
+                dorucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                rucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                vecera: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+              },
+              '7': {
+                dorucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                rucak: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+                vecera: {
+                  naziv: null,
+                  sastojci: {
+          
+                  },
+                  recept: null,
+                  nutritivnaVrednost: {
+                    kalorije: null,
+                    masti: null,
+                    proteini: null,
+                    uh: null
+                  }
+                },
+              },
+            }
+          };
         /* event.preventDefault();
         var subscribeForm = document.querySelector('form');
 
         subscribeForm.submit(); */
+        fetch('php/create_meal_plan.php', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(sedmodnevniPlan),
+        })
+
 
         fetch('php/subscribe.php', {
             method: 'post',
@@ -595,7 +894,7 @@ var controller = (function (UICtrl, dataCtrl) {
 
     // users calculated values for keto diet
     var userCalculatedValues;
-    
+
     var subscribeModal = UICtrl.createSubscribeModal();
 
 
@@ -607,7 +906,7 @@ var controller = (function (UICtrl, dataCtrl) {
 
             //if final question is answered - send data to php script
             if (state.questionMode() === 'final-question') {
-                
+
                 // store user input
                 input[`${state.questionType()}`] = UICtrl.currentPageInput(event, state, input);
 
