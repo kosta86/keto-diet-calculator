@@ -1,7 +1,7 @@
 <?php
 
 $sedmodnevni_plan = file_get_contents("php://input");
-$sedmodnevni_plan = json_encode($sedmodnevni_plan);
+$sedmodnevni_plan_json = json_decode($sedmodnevni_plan);
 
 var_dump($sedmodnevni_plan);
 
@@ -78,61 +78,18 @@ var_dump($sedmodnevni_plan);
 
 		$obrociJSON = json_encode($obroci);
 
-
-<<<<<<< HEAD
 			//ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima dorucka $obrociJSON->dorucak(array)->[0]->sastojci
 			if (!in_array($iskljuceneNamirnice , $obroci->dorucak[$key]->sastojci)) {
 				$sedmodnevni_plan->dan1 = (object) ['dorucak' => $value];
 				/* print_r ('true ' . $key. ' '); */ // proveren - radi if statement
 			} 
 
-=======
-		$sedmodnevni_plan = (object) [];
-		$
-		$placeholder1 = 1;
-		
-		//dodaje dorucak u sve dane sedmodnevnog plana
-		foreach ($obroci->dorucak as $key => $value) { //iteracija $obrociJSON->dorucak(array) koji sadrzi dorucke(object)
-			
-			if (!in_array($iskljuceneNamirnice , $obroci->dorucak[$key]->sastojci)) {//ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima dorucka $obrociJSON->dorucak(array)->[0]->sastojci
-				
-				if ($placeholder1 < 8) {
-					$sedmodnevni_plan->dan[$placeholder1] = (object) ['dorucak' => $value];
-					
-				} 
-				
+			//ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima dorucka $obrociJSON->dorucak(array)->[0]->sastojci
+			if (!in_array($iskljuceneNamirnice , $obroci->dorucak[$key]->sastojci)) {
+				$sedmodnevni_plan->dan1 = (object) ['dorucak' => $value];
+				/* print_r ('true ' . $key. ' '); */ // proveren - radi if statement
 			} 
-			$placeholder1 = $placeholder1 + 1;
-		}
-		
-		$placeholder2 = 1;
 
-		//dodaje rucak u sve dane sedmodnevnog plana
-		foreach ($obroci->rucak as $key1 => $value1) { //iteracija $obrociJSON->dorucak(array) koji sadrzi ruckove(object)
-			
-			if (!in_array($iskljuceneNamirnice , $obroci->rucak[$key1]->sastojci)) {//ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima rucka $obrociJSON->rucak(array)->[0]->sastojci
-				
-				if ($placeholder2 < 8) {
-					$sedmodnevni_plan->dan[$placeholder2] = (object) ['rucak' => $value1];
-				} 
-			} 
-			$placeholder2 = $placeholder2 + 1;
-		}
-
-
-		$placeholder3 = 1;
-		//dodaje veceru u sve dane sedmodnevnog plana
-		foreach ($obroci->vecera as $key2 => $value2) { //iteracija $obrociJSON->dorucak(array) koji sadrzi vecere(object)
-			
-			if (!in_array($iskljuceneNamirnice , $obroci->vecera[$key2]->sastojci)) {//ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima vecere $obrociJSON->vecera(array)->[0]->sastojci
-				
-				if ($placeholder3 < 8) {
-					$sedmodnevni_plan->dan[$placeholder3] = (object) ['vecera' => $value2];
-				} 
-		
-			} 
-				$placeholder3 = $placeholder3 + 1;
->>>>>>> 679f3cb402d94b5ef1770c232e440f440d1c9648
 		}
 
 		
