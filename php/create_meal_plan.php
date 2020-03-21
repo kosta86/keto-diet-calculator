@@ -31,7 +31,7 @@
 
 		foreach ($obroci->dorucak as $key => $value) { //iteracija $obrociJSON->dorucak(array) koji sadrzi dorucke(object)
 
-			if (!in_array($iskljuceneNamirnice , $obroci->dorucak[$key]->sastojci)) {//ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima dorucka $obrociJSON->dorucak(array)->[0]->sastojci
+			if (!in_array($iskljuceneNamirnice , $obroci->dorucak[$key]->sastojci)) {
 				$sedmodnevni_plan->dan1 = (object) ['dorucak' => $value];
 				/* print_r ('true ' . $key. ' '); */ // proveren - radi if statement
 			} 

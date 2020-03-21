@@ -140,6 +140,7 @@ var UIController = (function () {
     }
 
     function sendCalculatedDataToDatabase(event, form) {
+        var sedmodnepusigavniPlan = {
         /* event.preventDefault();
         var subscribeForm = document.querySelector('form');
 
