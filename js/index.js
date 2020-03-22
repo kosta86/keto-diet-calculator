@@ -139,309 +139,768 @@ var UIController = (function () {
         fatsInput.value = userCalculatedValues.dailyNeeds.fats;
     }
 
-    function sendCalculatedDataToDatabase(event, form) {
-        var sedmodnevniPlan = {
+    function sendCalculatedDataToDatabase(event, form, userCalculatedValues, input) {
+        var iskljuceneNamirnice = input.excludeMeat.concat(input.excludeOthers);
+        var sedmodnevniPlanTemplate = {
             dan: {
-              'prvi': {
-                dorucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                rucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                vecera: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-              },
-              'drugi': {
-                dorucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                rucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                vecera: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-              },
-              'treci': {
-                dorucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                rucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                vecera: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-              },
-              'cetvrti': {
-                dorucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                rucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                vecera: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-              },
-              'peti': {
-                dorucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                rucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                vecera: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-              },
-              'sesti': {
-                dorucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                rucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                vecera: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-              },
-              'sedmi': {
-                dorucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                rucak: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-                vecera: {
-                  naziv: null,
-                  sastojci: {
-          
-                  },
-                  recept: null,
-                  nutritivnaVrednost: {
-                    kalorije: null,
-                    masti: null,
-                    proteini: null,
-                    uh: null
-                  }
-                },
-              },
-            }
-          };
-        /* event.preventDefault();
-        var subscribeForm = document.querySelector('form');
+                '1': {
+                    dorucak: {
+                        naziv: null,
+                        sastojci: {
 
-        subscribeForm.submit(); */
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    rucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    vecera: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                },
+                '2': {
+                    dorucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    rucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    vecera: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                },
+                '3': {
+                    dorucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    rucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    vecera: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                },
+                '4': {
+                    dorucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    rucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    vecera: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                },
+                '5': {
+                    dorucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    rucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    vecera: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                },
+                '6': {
+                    dorucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    rucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    vecera: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                },
+                '7': {
+                    dorucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    rucak: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                    vecera: {
+                        naziv: null,
+                        sastojci: {
+
+                        },
+                        recept: null,
+                        nutritivnaVrednost: {
+                            kalorije: null,
+                            masti: null,
+                            proteini: null,
+                            uh: null
+                        }
+                    },
+                },
+            }
+        };
+        var obroci = {
+            dorucak: [
+                {
+                    naziv: 'dorucak1',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                },
+                {
+                    naziv: 'dorucak2',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                },
+                {
+                    naziv: 'dorucak3',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                },
+                {
+                    naziv: 'dorucak4',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                },
+                {
+                    naziv: 'dorucak5',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                },
+                {
+                    naziv: 'dorucak6',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                }, {
+                    naziv: 'dorucak7',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                },
+                {
+                    naziv: 'dorucak8',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                },
+                {
+                    naziv: 'dorucak9',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                },
+                {
+                    naziv: 'dorucak10',
+                    sastojci: {
+                        paradajz: 150,
+                        slanina: 250,
+                        tost: 50,
+                        kobasica: 200
+                    },
+                    nutritivnaVrednost: {
+                        kalorija: 450,
+                        masti: 75,
+                        proteina: 20,
+                        uh: 5
+                    }
+                }
+
+            ],
+            rucak: [{
+                naziv: 'rucak1',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'rucak2',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'rucak3',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'rucak4',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'rucak5',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'rucak6',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            }, {
+                naziv: 'rucak7',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'rucak8',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'rucak9',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'rucak10',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            }],
+            vecera: [{
+                naziv: 'vecera1',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'vecera2',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'vecera3',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'vecera4',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'vecera5',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'vecera6',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            }, {
+                naziv: 'vecera7',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'vecera8',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'vecera9',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            },
+            {
+                naziv: 'vecera10',
+                sastojci: {
+                    paradajz: 150,
+                    slanina: 250,
+                    tost: 50,
+                    kobasica: 200
+                },
+                nutritivnaVrednost: {
+                    kalorija: 450,
+                    masti: 75,
+                    proteina: 20,
+                    uh: 5
+                }
+            }]
+        }
+
+        var dataToSend = {
+            sedmodnevniPlanTemplate: sedmodnevniPlanTemplate,
+            obroci: obroci,
+            userCalculatedValues: userCalculatedValues,
+            iskljuceneNamirnice: iskljuceneNamirnice
+        }
+
+
         fetch('php/create_meal_plan.php', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify(sedmodnevniPlan),
+            body: JSON.stringify(dataToSend)
+            
         })
 
 
@@ -1048,7 +1507,7 @@ var controller = (function (UICtrl, dataCtrl) {
             UICtrl.fillHiddenInputs(userCalculatedValues);
 
             //submit form to subscribe.php
-            UICtrl.sendCalculatedDataToDatabase(event, form);
+            UICtrl.sendCalculatedDataToDatabase(event, form, userCalculatedValues, input);
 
             //reset the modal form
             modalForm.restart();
