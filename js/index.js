@@ -140,9 +140,9 @@ var UIController = (function () {
     }
 
     function sendCalculatedDataToDatabase(event, form) {
-        var sedmodnepusigavniPlan = {
+        var sedmodnevniPlan = {
             dan: {
-              '1': {
+              'prvi': {
                 dorucak: {
                   naziv: null,
                   sastojci: {
@@ -183,7 +183,7 @@ var UIController = (function () {
                   }
                 },
               },
-              '2': {
+              'drugi': {
                 dorucak: {
                   naziv: null,
                   sastojci: {
@@ -224,7 +224,7 @@ var UIController = (function () {
                   }
                 },
               },
-              '3': {
+              'treci': {
                 dorucak: {
                   naziv: null,
                   sastojci: {
@@ -265,7 +265,7 @@ var UIController = (function () {
                   }
                 },
               },
-              '4': {
+              'cetvrti': {
                 dorucak: {
                   naziv: null,
                   sastojci: {
@@ -306,7 +306,7 @@ var UIController = (function () {
                   }
                 },
               },
-              '5': {
+              'peti': {
                 dorucak: {
                   naziv: null,
                   sastojci: {
@@ -347,7 +347,7 @@ var UIController = (function () {
                   }
                 },
               },
-              '6': {
+              'sesti': {
                 dorucak: {
                   naziv: null,
                   sastojci: {
@@ -388,7 +388,7 @@ var UIController = (function () {
                   }
                 },
               },
-              '7': {
+              'sedmi': {
                 dorucak: {
                   naziv: null,
                   sastojci: {

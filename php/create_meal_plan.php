@@ -1,105 +1,84 @@
 <?php
 
-$sedmodnevni_plan = file_get_contents("php://input");
-$sedmodnevni_plan_json = json_decode($sedmodnevni_plan);
+$objekat = file_get_contents("php://input");
+$objekat = json_decode($objekat);
 
-var_dump($sedmodnevni_plan);
+var_dump($objekat);
 
-/* class Create_meal_plan {
+    function meal_plan($kalorije, $sedmodnevni_plan)
+    {
+        $objekat = (object) [];
+        $dorucak_array[] = (object) array('naziv' => 'dorucak1', 'sastojci' => (object) array('paradajz'=> 200, 'slanina'=> 200, 'tost'=> 200, 'kobasica'=> 200), 'kalorija' => 450);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak2', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak3', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak4', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak5', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak6', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak7', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak8', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak9', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak10', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak11', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak12', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak13', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $dorucak_array[] = (object) array('naziv' => 'dorucak14', 'sastojci' => (object) array('sir'=> 200, 'prsuta' => 300, 'tortilja'=> 100), 'kalorija' => 200);
+        $rucak_array[] = (object) array('naziv' => 'rucak1', 'sastojci' => (object) array('svinjski vrat'=> 250 , 'slanina'=> 150, 'zelena salata'=> 150), 'kalorija' => 450);
+        $rucak_array[] = (object) array('naziv' => 'rucak2', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak3', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak4', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak5', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak6', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak7', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak8', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak9', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak10', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak11', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak12', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak13', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak14', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $rucak_array[] = (object) array('naziv' => 'rucak15', 'sastojci' => (object) array('pileci file'=> 200, 'paradajz' => 150, 'sir'=> 150), 'kalorija' => 350);
+        $vecera_array[] = (object) array('naziv' => 'vecera1', 'sastojci' => (object) array('tost hleb'=> 50, 'sunka'=> 250, 'kackavalj'=> 200, 'kecap'=> 50, 'majonez'=> 50), 'kalorija' => 550);
+        $vecera_array[] = (object) array('naziv' => 'vecera2', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera3', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera4', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera5', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera6', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera7', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera8', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera9', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera10', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera11', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera12', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera13', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera14', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+        $vecera_array[] = (object) array('naziv' => 'vecera15', 'sastojci' => (object) array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+
+        $obroci = (object) [
+            'dorucak' => $dorucak_array,
+            'rucak' => $rucak_array,
+            'vecera' => $vecera_array
+        ];
+
+        $iskljuceneNamirnice = 'mast';
+
+		$dan_iterator = ['prvi', 'drugi', 'treci', 'cetvrti', 'peti', 'sesti', 'sedmi'];
+
+        foreach ($dan_iterator as $key => $dan) {
+            foreach ($sedmodnevni_plan->dan->$dan as $key1 => $value1) {
+                if ($key == 'dorucak') {
+                    $key->$value1 = $obroci->dorucak[0];
+                }
+            }
+        }
+
+        
+
+        /* var_dump($obroci); */
+        var_dump($sedmodnevni_plan);
+       
+    }
  
-	function __construct( $kalorije, $iskljuceneNamirnice, $obrociJSON ) {
-		$this->kalorije = $kalorije;
-		$this->iskljuceneNamirnice = $iskljuceneNamirnice;
-		$this->obrociJSON = $obrociJSON;
-	}
-  */
 
-	function meal_plan($kalorije) {
-		$sedmodnevni_plan = (object) [];
-		$dorucak_array[] = (object) array('naziv' => 'dorucak1', 'sastojci' => array('paradajz', 'slanina', 'tost', 'kobasica'), 'kalorija' => 450);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak2', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak3', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak4', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak5', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak6', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak7', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak8', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak9', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak10', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak11', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak12', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak13', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$dorucak_array[] = (object) array('naziv' => 'dorucak14', 'sastojci' => array('sir', 'prsuta', 'tortilja'), 'kalorija' => 200);
-		$rucak_array[] = (object) array('naziv' => 'rucak1', 'sastojci' => array('svinjski vrat', 'slanina', 'zelena salata'), 'kalorija' => 450);
-		$rucak_array[] = (object) array('naziv' => 'rucak2', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak3', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak4', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak5', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak6', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak7', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak8', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak9', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak10', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak11', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak12', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak13', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak14', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$rucak_array[] = (object) array('naziv' => 'rucak15', 'sastojci' => array('pileci file', 'paradajz', 'sir'), 'kalorija' => 350);
-		$vecera_array[] = (object) array('naziv' => 'vecera1', 'sastojci' => array('tost hleb', 'sunka', 'kackavalj', 'kecap', 'majonez'), 'kalorija' => 550);
-		$vecera_array[] = (object) array('naziv' => 'vecera2', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera3', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera4', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera5', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera6', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera7', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera8', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera9', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera10', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera11', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera12', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera13', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera14', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
-		$vecera_array[] = (object) array('naziv' => 'vecera15', 'sastojci' => array('tortilja', 'pecenica', '', 'paradajz', 'krastavac'), 'kalorija' => 400);
+meal_plan('argument', $objekat);
 
-
-
-
-		/* $sedmodnevni_plan = (object) []; */
-
-		$dorucak = array();
-
-		$obroci = (object) [
-			'dorucak' => $dorucak_array,
-			'rucak' => $rucak_array,
-			'vecera' => $vecera_array
-		];
-
-		$iskljuceneNamirnice = 'mast';
-
-		$obrociJSON = json_encode($obroci);
-
-			//ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima dorucka $obrociJSON->dorucak(array)->[0]->sastojci
-			if (!in_array($iskljuceneNamirnice , $obroci->dorucak[$key]->sastojci)) {
-				$sedmodnevni_plan->dan1 = (object) ['dorucak' => $value];
-				/* print_r ('true ' . $key. ' '); */ // proveren - radi if statement
-			} 
-
-			//ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima dorucka $obrociJSON->dorucak(array)->[0]->sastojci
-			if (!in_array($iskljuceneNamirnice , $obroci->dorucak[$key]->sastojci)) {
-				$sedmodnevni_plan->dan1 = (object) ['dorucak' => $value];
-				/* print_r ('true ' . $key. ' '); */ // proveren - radi if statement
-			} 
-
-		}
-
-		
-			var_dump($sedmodnevni_plan);
-			phpinfo();
-
-
-	} 
- 
-/* } */
-
-meal_plan('argument');
 ?>
