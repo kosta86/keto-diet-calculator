@@ -139,7 +139,8 @@ var UIController = (function () {
         fatsInput.value = userCalculatedValues.dailyNeeds.fats;
     }
 
-    function sendCalculatedDataToDatabase(event, form) {
+    function sendCalculatedDataToDatabase(event, form, userCalculatedValues, input) {
+        var iskljuceneNamirnice = input.excludeMeat.concat(input.excludeOthers);
         var sedmodnevniPlanTemplate = {
             dan: {
                 '1': {
@@ -883,9 +884,12 @@ var UIController = (function () {
                 }
             }]
         }
+
         var dataToSend = {
             sedmodnevniPlanTemplate: sedmodnevniPlanTemplate,
-            obroci: obroci
+            obroci: obroci,
+            userCalculatedValues: userCalculatedValues,
+            iskljuceneNamirnice: iskljuceneNamirnice
         }
 
 
@@ -1503,7 +1507,7 @@ var controller = (function (UICtrl, dataCtrl) {
             UICtrl.fillHiddenInputs(userCalculatedValues);
 
             //submit form to subscribe.php
-            UICtrl.sendCalculatedDataToDatabase(event, form);
+            UICtrl.sendCalculatedDataToDatabase(event, form, userCalculatedValues, input);
 
             //reset the modal form
             modalForm.restart();

@@ -5,14 +5,11 @@ $data = json_decode($json_data);
 
 $obroci = $data->obroci;
 $sedmodnevni_plan = $data->sedmodnevniPlanTemplate;
-
-$iskljucene_namirnice = 'mast';
-
-
+$dnevne_potrebe = $data->userCalculatedValues->dailyNeeds;
+$iskljucene_namirnice = $data->iskljuceneNamirnice;
 
 
-
-function meal_plan($kalorije, $obroci, $sedmodnevni_plan, $iskljucene_namirnice) {
+function meal_plan($dnevne_potrebe, $obroci, $sedmodnevni_plan, $iskljucene_namirnice) {
     $dorucak_array = $obroci->dorucak;
     shuffle($dorucak_array);
 
@@ -60,9 +57,66 @@ function meal_plan($kalorije, $obroci, $sedmodnevni_plan, $iskljucene_namirnice)
         }
     }
 
+    //resetovanje iteratora
+    $dan_iterator = 1;
 
-    var_dump($sedmodnevni_plan);
+
+
+    function calculate_daily_intake($sedmodnevni_plan) {
+        $ukupno_kalorija = [];
+
+        foreach ($sedmodnevni_plan->dan as $key => $value) {
+
+            //popunjava array sa kalorijama koji predstavlja zbir obroka za svaki dan *startuje (key => 1 - dan 1) da bi bilo lakse da se po danim pronadje broj kalorija
+            $ukupno_kalorija[count($ukupno_kalorija) + 1] = $value->dorucak->nutritivnaVrednost->kalorija + $value->rucak->nutritivnaVrednost->kalorija + $value->vecera->nutritivnaVrednost->kalorija;
+        }
+
+        return $ukupno_kalorija;
+    }
+    $dnevni_unos_kalorija = calculate_daily_intake($sedmodnevni_plan);
+
+
+
+    function daily_calorie_change_percentage($dnevni_unos_kalorija, $dnevne_potrebe) {
+        $dnevne_promene = [];
+
+        // izvlacenje procenta razlike izmedju potrebnih kalorija i kalorija koje obroci nose
+        foreach ($dnevni_unos_kalorija as $key => $kalorija_u_obroku) {
+            $razlika_u_kalorijama = $dnevne_potrebe->calories - $kalorija_u_obroku;
+            $ukupna_procentualna_razlika = (($razlika_u_kalorijama * 100) / $kalorija_u_obroku);
+
+            var_dump($dnevne_potrebe->calories);
+            var_dump($kalorija_u_obroku);
+
+            //ako treba da se doda kolicina sastojaka u obrocima
+            if ($razlika_u_kalorijama >= 0) {
+
+                //ako ne treba da se doda manje od 100% kolicine sastojaka koji su u receptu
+                if ($ukupna_procentualna_razlika < 100) {
+                    $dnevne_promene[$key] = array('+' => round(100 - (($razlika_u_kalorijama * 100) / $kalorija_u_obroku)));
+                }
+
+                //ako treba da se doda vise od 100% kolicine sastojaka koji su u receptu
+                if ($ukupna_procentualna_razlika > 100) {
+                    $dnevne_promene[$key] = array('+' => round(($razlika_u_kalorijama * 100) / $kalorija_u_obroku));
+                }
+    
+            }
+
+            //ako treba da se oduzme kolicina sastojaka u obrocima
+            if ($razlika_u_kalorijama < 0) {
+
+                $dnevne_promene[$key] = array('-' => round(100 - (($razlika_u_kalorijama * 100) / $kalorija_u_obroku)));
+            }
+
+        }
+
+        return $dnevne_promene;
+    }
+    $dnevna_korekcija_kalorija_procenti = daily_calorie_change_percentage($dnevni_unos_kalorija, $dnevne_potrebe);
+
+    var_dump($dnevna_korekcija_kalorija_procenti);
 };
  
 
-meal_plan('argument', $obroci, $sedmodnevni_plan, $iskljucene_namirnice);
+meal_plan($dnevne_potrebe, $obroci, $sedmodnevni_plan, $iskljucene_namirnice);
