@@ -83,7 +83,7 @@ function meal_plan($dnevne_potrebe, $obroci, $sedmodnevni_plan, $iskljucene_nami
         // izvlacenje procenta razlike izmedju potrebnih kalorija i kalorija koje obroci nose
         foreach ($dnevni_unos_kalorija as $key => $kalorija_u_obroku) {
             $razlika_u_kalorijama = $dnevne_potrebe->calories - $kalorija_u_obroku;
-            $ukupna_procentualna_razlika = (($razlika_u_kalorijama * 100) / $kalorija_u_obroku);
+            $ukupna_procentualna_razlika = $razlika_u_kalorijama / $kalorija_u_obroku * 100;
 
             var_dump($dnevne_potrebe->calories);
             var_dump($kalorija_u_obroku);
@@ -93,12 +93,12 @@ function meal_plan($dnevne_potrebe, $obroci, $sedmodnevni_plan, $iskljucene_nami
 
                 //ako ne treba da se doda manje od 100% kolicine sastojaka koji su u receptu
                 if ($ukupna_procentualna_razlika < 100) {
-                    $dnevne_promene[$key] = array('+' => round(100 - (($razlika_u_kalorijama * 100) / $kalorija_u_obroku)));
+                    $dnevne_promene[$key] = array('+' => round($ukupna_procentualna_razlika));
                 }
 
                 //ako treba da se doda vise od 100% kolicine sastojaka koji su u receptu
                 if ($ukupna_procentualna_razlika > 100) {
-                    $dnevne_promene[$key] = array('+' => round(($razlika_u_kalorijama * 100) / $kalorija_u_obroku));
+                    $dnevne_promene[$key] = array('+' => round($ukupna_procentualna_razlika));
                 }
     
             }
@@ -106,7 +106,7 @@ function meal_plan($dnevne_potrebe, $obroci, $sedmodnevni_plan, $iskljucene_nami
             //ako treba da se oduzme kolicina sastojaka u obrocima
             if ($razlika_u_kalorijama < 0) {
 
-                $dnevne_promene[$key] = array('-' => round(100 - (($razlika_u_kalorijama * 100) / $kalorija_u_obroku)));
+                $dnevne_promene[$key] = array('-' => round($ukupna_procentualna_razlika));
             }
 
         }
