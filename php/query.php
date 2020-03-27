@@ -1,5 +1,7 @@
 <?php
 
+// SKRIPTA ZA DOBIJANJE NUTRITIVNIH VREDNOSTI HRANE IZ BAZE PODATAKA (NEDOVRSENO)...
+
 //fetch_item.php
 
 include('database_connection.php');

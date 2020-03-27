@@ -1,6 +1,7 @@
 <?php
 
-$json_data = file_get_contents("php://input");
+
+$json_data = file_get_contents("php://input"); // data from index.js fetch API 
 $data = json_decode($json_data);
 
 $obroci = $data->obroci;

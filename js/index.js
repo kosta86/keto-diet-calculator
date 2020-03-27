@@ -125,11 +125,12 @@ var dataController = (function () {
 //UI controller
 var UIController = (function () {
 
-    function fillHiddenInputs(userCalculatedValues) {
+    function fillHiddenInputs(userCalculatedValues, input) {
         var caloriesInput = document.getElementById('input_kalorije');
         var proteinsInput = document.getElementById('input_proteini');
         var carbsInput = document.getElementById('input_ugljeni_hidrati');
         var fatsInput = document.getElementById('input_masti');
+        var iskljuceneNamirniceInput = document.getElementById('input_iskljucene_namirnice');
 
 
 
@@ -137,10 +138,12 @@ var UIController = (function () {
         proteinsInput.value = userCalculatedValues.dailyNeeds.proteins;
         carbsInput.value = userCalculatedValues.dailyNeeds.carbs;
         fatsInput.value = userCalculatedValues.dailyNeeds.fats;
+        iskljuceneNamirniceInput.value = input.excludeMeat.concat(input.excludeOthers);
+        
     }
 
     function sendCalculatedDataToDatabase(event, form, userCalculatedValues, input) {
-        var iskljuceneNamirnice = input.excludeMeat.concat(input.excludeOthers);
+        /* var iskljuceneNamirnice = input.excludeMeat.concat(input.excludeOthers); */
         var sedmodnevniPlanTemplate = {
             dan: {
                 '1': {
@@ -889,7 +892,7 @@ var UIController = (function () {
             sedmodnevniPlanTemplate: sedmodnevniPlanTemplate,
             obroci: obroci,
             userCalculatedValues: userCalculatedValues,
-            iskljuceneNamirnice: iskljuceneNamirnice
+            iskljuceneNamirnice: form.iskljuceneNamirnice
         }
 
 
@@ -1057,6 +1060,7 @@ var UIController = (function () {
                                     <input id="input_proteini" type="hidden" name="proteini" value="">
                                     <input id="input_ugljeni_hidrati" type="hidden" name="ugljeni_hidrati" value="">
                                     <input id="input_masti" type="hidden" name="masti" value="">
+                                    <input id="input_iskljucene_namirnice" type="hidden" name="iskljucene_namirnice" value="">
                                     </div>
                                 </form>
                                 </div>
@@ -1087,6 +1091,7 @@ var UIController = (function () {
         return modal;
     }
 
+    //displays user calculated values on the results page of the application
     function fillResults(userCalculatedValues, input) {
 
         document.getElementById("dnevni-unos-kalorija").textContent = userCalculatedValues.dailyNeeds.calories;
@@ -1504,7 +1509,7 @@ var controller = (function (UICtrl, dataCtrl) {
             modalForm.materialClick(event);
 
             //fill in hidden inputs with user calculated data
-            UICtrl.fillHiddenInputs(userCalculatedValues);
+            UICtrl.fillHiddenInputs(userCalculatedValues, input);
 
             //submit form to subscribe.php
             UICtrl.sendCalculatedDataToDatabase(event, form, userCalculatedValues, input);
