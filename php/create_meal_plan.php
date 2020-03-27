@@ -26,8 +26,8 @@ function meal_plan($dnevne_potrebe, $obroci, $sedmodnevni_plan_blank, $iskljucen
         // popunjavanje dorucka za svaki dan sedmodnevnog plana
         foreach ($dorucak_array as $key => $value) {
 
-            //ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima obroka koji je trenutno u iteraciji ubacuje taj obrok u plan
-            if (!in_array($iskljucene_namirnice, array($dorucak_array[$key]->sastojci)) && $dan_iterator <= 7) {
+            //ako bilo koja namirnica iz $iskljuceneNamirnice(array) nije u sastojcima obroka koji je trenutno u iteraciji ubacuje taj obrok u plan *** i ako id dorucka nije vec koriscen za tog korisnika (ubaciti u bazu id svakog obroka koji je vec prikazan korisniku u planu ishrane)
+            if (!in_array($iskljucene_namirnice, array($dorucak_array[$key]->sastojci)) /* !in_array($USER_USED_RECEPIES_FROM_DB, $dorucak_array[$key]->ID_DORUCKA) */ && $dan_iterator <= 7) {
                 $sedmodnevni_plan_default->dan->{$dan_iterator}->dorucak = $value;
                 $dan_iterator++;
             }
