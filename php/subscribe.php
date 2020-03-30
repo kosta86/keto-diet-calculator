@@ -24,3 +24,8 @@ if (isset($_POST) && !empty($_POST)) {
   $statement->execute();
   
 }
+
+// send confirmation mail to user
+
+
+// send mail with link to customized meal plan

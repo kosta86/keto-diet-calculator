@@ -153,9 +153,8 @@ function meal_plan($dnevne_potrebe, $obroci, $sedmodnevni_plan_blank, $iskljucen
             }
 
         }
-
-        return $sedmodnevni_plan_customised;
         
+        return $sedmodnevni_plan_customised;
     }
     $sedmodnevni_plan_prilagodjen = make_customised_plan($korekcija_po_danima_procenti, $sedmodnevni_plan_default);
     var_dump($sedmodnevni_plan_prilagodjen);

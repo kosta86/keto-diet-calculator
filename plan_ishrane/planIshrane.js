@@ -5,13 +5,12 @@ function queryStrings() {
   var queryParams = new URLSearchParams(url);
 
   var id = queryParams.get('id');
-  var dan = queryParams.get('dan');
+  /* var dan = queryParams.get('dan'); */
 
   return {
     id: id,
-    dan: dan
+    /* dan: dan */
   }
-
 }
 
 
@@ -22,7 +21,6 @@ function sendQueryToHandler(queryStrings) {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
     },
     body: JSON.stringify(queryStrings)
   })
@@ -38,16 +36,28 @@ function getResponceFromHandler(sendQueryToHandler) {
       return responce.json();
     })
     .then(data => {
-      // data expected to be daily meal data in json format and user data
-      // example:
-      // object.dorucak.text
-      // object.dorucak.sastojci
-      // object.dorucak.nutritivnaVrednost
-      // object.dorucak.
-      console.log(data);
-
-
-      document.querySelector('.dorucak').innerHTML = data.ime + ' ' + data.email;
+      if (data.userData) {
+        // data expected to be daily meal data in json format and user data
+        // example:
+        // object.dorucak.text
+        // object.dorucak.sastojci
+        // object.dorucak.nutritivnaVrednost
+        // object.dorucak.
+        console.log(data);
+        document.querySelector('.dorucak').innerHTML = data.mealPlan.dorucak.title;
+      } 
+      if (data.error === 'sub_end') {
+        window.location.href = '../error_pages/subscription_expired.html';
+      }
+      if (data.error === 'no_query_id') {
+        window.location.href = '../error_pages/error.html';
+      }
+      if (data.error === 'false_id') {
+        window.location.href = '../error_pages/error.html';
+      }
+        
+      
+      
     })
     .catch(err => {
       // Do something for an error here
